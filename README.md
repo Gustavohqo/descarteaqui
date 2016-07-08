@@ -17,7 +17,7 @@ Repositório para o projeto da disciplina Engenharia de Software I ministrado pe
 git clone https://github.com/gustavohqo/descarteaqui.git
 ```
 
-2.Dentro do diretorio descarteaqui/ execute crie uma nova branch para seu uso.
+2.Dentro do diretorio descarteaqui/ crie uma nova branch para seu uso.
 
 ```bash
 git checkout -b "login"
