@@ -15,4 +15,10 @@
     <string name="account_icon">Contas</string>
     <string name="config_separator">Configurações</string>
 
+    <!-- Filters -->
+    <string name="filter_oil">Óleo</string>
+    <string name="filter_battery">Bateria</string>
+    <string name="filter_chemistry">Químico</string>
+
+
 </resources>

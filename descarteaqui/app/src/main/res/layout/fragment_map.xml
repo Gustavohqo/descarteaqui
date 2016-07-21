@@ -53,7 +53,7 @@
             fab:fab_colorNormal="@color/colorFAB"
             fab:fab_colorPressed="@color/colorFABPressed"
             fab:fab_size="mini"
-            fab:fab_label="Bateria"/>
+            fab:fab_label="@string/filter_battery"/>
 
         <com.github.clans.fab.FloatingActionButton
             android:id="@+id/fab_oil"
@@ -63,7 +63,7 @@
             fab:fab_colorNormal="@color/colorFAB"
             fab:fab_colorPressed="@color/colorFABPressed"
             fab:fab_size="mini"
-            fab:fab_label="Óleo"/>
+            fab:fab_label="@string/filter_oil"/>
 
         <com.github.clans.fab.FloatingActionButton
             android:id="@+id/fab_chemistry"
@@ -73,7 +73,7 @@
             fab:fab_colorNormal="@color/colorFAB"
             fab:fab_colorPressed="@color/colorFABPressed"
             fab:fab_size="mini"
-            fab:fab_label="Químico"/>
+            fab:fab_label="@string/filter_chemistry"/>
 
     </com.github.clans.fab.FloatingActionMenu>
 
