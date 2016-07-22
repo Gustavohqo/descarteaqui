@@ -1,7 +1,9 @@
 package com.descarteaqui.descarteaqui;
 
+import android.app.FragmentManager;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -11,7 +13,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import com.descarteaqui.descarteaqui.fragments.MapFragment;
+import com.descarteaqui.descarteaqui.fragments.MapsFragment;
 import com.descarteaqui.descarteaqui.fragments.PetiFragment;
 import com.descarteaqui.descarteaqui.fragments.TipFragment;
 
@@ -38,7 +40,7 @@ public class MainActivity extends AppCompatActivity
         toggle.syncState();
 
         navigationView = (NavigationView) findViewById(R.id.nav_view);
-        //Set the home fragment
+
         onNavigationItemSelected(navigationView.getMenu().getItem(0).setChecked(true));
 
         navigationView.setNavigationItemSelectedListener(this);
@@ -57,19 +59,15 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
+
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
         }
@@ -81,37 +79,34 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
 
-        // Handle navigation view item clicks here.
+        FragmentManager fm = getFragmentManager();
+        Fragment fragment = null;
+
         int id = item.getItemId();
 
-        if (id == R.id.nav_map) {
-            //Set the fragment initially
-            MapFragment fragment = new MapFragment();
-            android.support.v4.app.FragmentTransaction fragmentTransaction =
-                    getSupportFragmentManager().beginTransaction();
-            fragmentTransaction.replace(R.id.fragment_container, fragment);
-            fragmentTransaction.commit();
-            // Handle the camera action
+        if (id == R.id.nav_map){
+
+            fragment = new MapsFragment();
+
         } else if (id == R.id.nav_tip) {
-            //Set the fragment initially
-            TipFragment fragment = new TipFragment();
-            android.support.v4.app.FragmentTransaction fragmentTransaction =
-                    getSupportFragmentManager().beginTransaction();
-            fragmentTransaction.replace(R.id.fragment_container, fragment);
-            fragmentTransaction.commit();
+
+            fragment = new TipFragment();
 
         } else if (id == R.id.nav_petitions) {
-            //Set the fragment initially
-            PetiFragment fragment = new PetiFragment();
-            android.support.v4.app.FragmentTransaction fragmentTransaction =
-                    getSupportFragmentManager().beginTransaction();
-            fragmentTransaction.replace(R.id.fragment_container, fragment);
-            fragmentTransaction.commit();
+
+            fragment = new PetiFragment();
 
         } else if (id == R.id.nav_report) {
             Toast.makeText(getApplicationContext(),"report", Toast.LENGTH_SHORT).show();
         } else if (id == R.id.nav_accounts) {
             Toast.makeText(getApplicationContext(),"contas", Toast.LENGTH_SHORT).show();
+        }
+
+
+        if (fragment != null) {
+            fm.beginTransaction()
+                    .replace(R.id.fragment_container, fragment)
+                    .commit();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

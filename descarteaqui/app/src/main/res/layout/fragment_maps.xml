@@ -1,9 +1,14 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:fab="http://schemas.android.com/apk/res-auto"
-    tools:context=".fragments.MapFragment">
+    xmlns:fab="http://schemas.android.com/apk/res-auto">
+
+    <fragment
+        android:id="@+id/map"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        class="com.google.android.gms.maps.MapFragment" />
 
     <com.github.clans.fab.FloatingActionMenu
         android:id="@+id/social_floating_menu"
@@ -43,7 +48,8 @@
         fab:menu_shadowRadius="3dp"
         fab:menu_shadowXOffset="1dp"
         fab:menu_shadowYOffset="4dp"
-        fab:menu_showShadow="true">
+        fab:menu_showShadow="true"
+        android:layout_gravity="right|bottom">
 
         <com.github.clans.fab.FloatingActionButton
             android:id="@+id/fab_battery"
@@ -77,5 +83,4 @@
 
     </com.github.clans.fab.FloatingActionMenu>
 
-
-</RelativeLayout>
+</FrameLayout>
