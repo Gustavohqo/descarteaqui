@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#ea8926</color>
+    <color name="colorNav">#006348</color>
+    <color name="colorPrimaryDark">#006E51</color>
+    <color name="colorAccent">#d97c14</color>
+
+    <color name="colorFAB">#fc9b0d</color>
+    <color name="colorFABPressed">#ed8f2f</color>
+
+</resources>
