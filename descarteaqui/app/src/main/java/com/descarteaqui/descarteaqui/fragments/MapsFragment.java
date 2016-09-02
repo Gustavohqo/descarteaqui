@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -39,7 +40,6 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
     private ArrayList<MarkerOptions> markers = new ArrayList<>();
     private ArrayList<String> options = new ArrayList<>();
 
-    @TargetApi(Build.VERSION_CODES.M)
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -139,10 +139,10 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
             return;
         }
 
+        map.setPadding(0, 170, 0, 0);
+
         map.getUiSettings().setMapToolbarEnabled(false);
         map.setMyLocationEnabled(true);
-
-        map.setPadding(0, 170, 0, 0);
 
         createMarkers();
 
@@ -229,20 +229,40 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
                 map.clear();
                 createMarkers();
                 floatButtonClear.setVisibility(View.INVISIBLE);
+                defaultColors();
                 break;
             default:
                 break;
         }
     }
 
+    private void defaultColors(){
+        floatbuttonBattery.setColorNormal(Color.parseColor("#fc9b0d"));
+        floatbuttonChemistry.setColorNormal(Color.parseColor("#fc9b0d"));
+        floatButtonSelective.setColorNormal(Color.parseColor("#fc9b0d"));
+        floatButtonHospital.setColorNormal(Color.parseColor("#fc9b0d"));
+        floatbuttonOil.setColorNormal(Color.parseColor("#fc9b0d"));
+    }
+
     private void filterBy(String trashType){
 
-        if (!options.isEmpty()) {
-            floatButtonClear.setVisibility(View.VISIBLE);
-        }
+        options.add(trashType);
 
-        if (!options.contains(trashType))
-            options.add(trashType);
+        if (!options.isEmpty())
+            floatButtonClear.setVisibility(View.VISIBLE);
+
+        for (int i = 0; i < options.size(); i++) {
+            if (options.get(i).equals("Eletrônico"))
+                floatbuttonBattery.setColorNormal(Color.parseColor("#bf7018"));
+            if (options.get(i).equals("Químico"))
+                floatbuttonChemistry.setColorNormal(Color.parseColor("#bf7018"));
+            if (options.get(i).equals("Coleta Seletiva"))
+                floatButtonSelective.setColorNormal(Color.parseColor("#bf7018"));
+            if (options.get(i).equals("Hospitalar"))
+                floatButtonHospital.setColorNormal(Color.parseColor("#bf7018"));
+            if (options.get(i).equals("Óleo"))
+                floatbuttonOil.setColorNormal(Color.parseColor("#bf7018"));
+        }
 
         map.clear();
 
@@ -251,6 +271,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
             if (mark.getSnippet().contains(option))
                 map.addMarker(mark);
         }
+
     }
 
 }
