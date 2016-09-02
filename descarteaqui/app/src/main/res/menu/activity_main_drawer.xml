@@ -12,8 +12,6 @@
 
     <item android:title="@string/config_separator">
         <menu>
-            <item android:id="@+id/nav_report" android:icon="@drawable/ic_show_chart_black_24dp"
-                android:title="@string/report_icon" />
             <item android:id="@+id/nav_accounts" android:icon="@drawable/ic_account_circle_black_24dp"
                 android:title="@string/account_icon" />
         </menu>
