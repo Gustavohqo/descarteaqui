@@ -13,6 +13,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.descarteaqui.descarteaqui.fragments.LoginFragment;
 import com.descarteaqui.descarteaqui.fragments.MapsFragment;
 import com.descarteaqui.descarteaqui.fragments.PetiFragment;
 import com.descarteaqui.descarteaqui.fragments.TipFragment;
@@ -97,7 +98,7 @@ public class MainActivity extends AppCompatActivity
             fragment = new PetiFragment();
 
         } else if (id == R.id.nav_accounts) {
-            Toast.makeText(getApplicationContext(),"contas", Toast.LENGTH_SHORT).show();
+            fragment = new LoginFragment();
         }
 
 

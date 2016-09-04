@@ -21,6 +21,18 @@
     <string name="filter_selective">Coleta Seletiva</string>
     <string name="filter_clear">Limpar Filtro</string>
 
+    <!-- Google Sign-In-->
+    <string name="signed_in_fmt">Signed in as: %s</string>
+    <string name="signed_in">Signed in</string>
+    <string name="signing_in">Signing in…</string>
+    <string name="signed_out">Signed out</string>
+
+    <!-- Button labels -->
+    <string name="sign_out">Sign Out</string>
+    <string name="disconnect">Disconnect</string>
+
+    <string name="loading">Loading…</string>
+
 
 
 </resources>
