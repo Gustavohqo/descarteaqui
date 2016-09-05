@@ -32,7 +32,8 @@
     <string name="disconnect">Disconnect</string>
 
     <string name="loading">Loading…</string>
-
-
+    <!-- Auth0 -->
+    <string name="auth0_client_id">7rQPLCbHycazZ5zmE2kx2r6XaSOoQLF2</string>
+    <string name="auth0_domain">c0mpaq.auth0.com</string>
 
 </resources>

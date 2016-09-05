@@ -1,6 +1,7 @@
 package com.descarteaqui.descarteaqui;
 
 import android.app.FragmentManager;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.app.Fragment;
@@ -11,9 +12,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
-import com.descarteaqui.descarteaqui.fragments.LoginFragment;
+import com.auth0.android.Auth0;
+import com.auth0.android.authentication.AuthenticationAPIClient;
+import com.auth0.android.authentication.AuthenticationException;
+import com.auth0.android.callback.BaseCallback;
+import com.auth0.android.result.UserProfile;
+import com.descarteaqui.descarteaqui.activities.LoginActivity;
 import com.descarteaqui.descarteaqui.fragments.MapsFragment;
 import com.descarteaqui.descarteaqui.fragments.PetiFragment;
 import com.descarteaqui.descarteaqui.fragments.TipFragment;
@@ -24,11 +32,41 @@ public class MainActivity extends AppCompatActivity
 
     NavigationView navigationView = null;
     Toolbar toolbar = null;
-
+    private Auth0 mAuth0;
+    private UserProfile mUserProfile;
+    private TextView email;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        mAuth0 = new Auth0(getString(R.string.auth0_client_id), getString(R.string.auth0_domain));
+        // The process to reclaim an UserProfile is preceded by an Authentication call.
+        AuthenticationAPIClient aClient = new AuthenticationAPIClient(mAuth0);
+
+        if(App.getInstance().getUserCredentials()!= null) {
+            aClient.tokenInfo(App.getInstance().getUserCredentials().getIdToken())
+                    .start(new BaseCallback<UserProfile, AuthenticationException>() {
+                        @Override
+                        public void onSuccess(final UserProfile payload) {
+                            MainActivity.this.runOnUiThread(new Runnable() {
+                                public void run() {
+                                    mUserProfile = payload;
+                                    refreshScreenInformation();
+                                }
+                            });
+
+                        }
+
+                        @Override
+                        public void onFailure(AuthenticationException error) {
+                            MainActivity.this.runOnUiThread(new Runnable() {
+                                public void run() {
+                                    Toast.makeText(MainActivity.this, "Profile Request Failed", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                        }
+                    });
+        }
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -46,6 +84,13 @@ public class MainActivity extends AppCompatActivity
 
         navigationView.setNavigationItemSelectedListener(this);
 
+
+    }
+
+    private void refreshScreenInformation() {
+        View header=navigationView.getHeaderView(0);
+        email = (TextView)header.findViewById(R.id.textView);
+        email.setText(mUserProfile.getEmail());
     }
 
     @Override
@@ -98,7 +143,8 @@ public class MainActivity extends AppCompatActivity
             fragment = new PetiFragment();
 
         } else if (id == R.id.nav_accounts) {
-            fragment = new LoginFragment();
+            Intent lockIntent = new Intent(this, LoginActivity.class);
+            startActivity(lockIntent);
         }
 
 
