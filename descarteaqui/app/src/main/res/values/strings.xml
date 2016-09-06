@@ -21,6 +21,7 @@
     <string name="filter_selective">Coleta Seletiva</string>
     <string name="filter_clear">Limpar Filtro</string>
 
-
+    <!-- Facebook ID -->
+    <string name="facebook_app_id">1249709945062245</string>
 
 </resources>

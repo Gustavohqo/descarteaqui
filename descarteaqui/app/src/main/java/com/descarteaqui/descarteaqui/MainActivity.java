@@ -1,6 +1,7 @@
 package com.descarteaqui.descarteaqui;
 
 import android.app.FragmentManager;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.app.Fragment;
@@ -97,7 +98,8 @@ public class MainActivity extends AppCompatActivity
             fragment = new PetiFragment();
 
         } else if (id == R.id.nav_accounts) {
-            Toast.makeText(getApplicationContext(),"contas", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(this, AccountsActivity.class);
+            startActivity(intent);
         }
 
 
