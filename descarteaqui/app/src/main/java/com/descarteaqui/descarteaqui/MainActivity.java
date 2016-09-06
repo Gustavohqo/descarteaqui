@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mAuth0 = new Auth0(getString(R.string.auth0_client_id), getString(R.string.auth0_domain));
-        // The process to reclaim an UserProfile is preceded by an Authentication call.
+
         AuthenticationAPIClient aClient = new AuthenticationAPIClient(mAuth0);
 
         if(App.getInstance().getUserCredentials()!= null) {
