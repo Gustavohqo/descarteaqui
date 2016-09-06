@@ -18,6 +18,7 @@ import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.descarteaqui.descarteaqui.R;
@@ -39,6 +40,20 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
     private GoogleMap map;
     private ArrayList<MarkerOptions> markers = new ArrayList<>();
     private ArrayList<String> options = new ArrayList<>();
+    private TextView GPSError;
+
+    @Override
+    public void onResume() {
+
+        checkPermission();
+
+        if (!checkGPSEnable())
+            GPSError.setVisibility(View.VISIBLE);
+        else
+            GPSError.setVisibility(View.INVISIBLE);
+
+        super.onResume();
+    }
 
     @Nullable
     @Override
@@ -51,6 +66,14 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
         floatbuttonChemistry = (FloatingActionButton) rootView.findViewById(R.id.fab_chemistry);
         floatButtonHospital = (FloatingActionButton) rootView.findViewById(R.id.fab_hospital);
         floatButtonSelective = (FloatingActionButton) rootView.findViewById(R.id.fab_selective);
+        GPSError = (TextView) rootView.findViewById(R.id.gps_error);
+
+        GPSError.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                checkPermission();
+            }
+        });
 
         floatButtonClear = (FloatingActionButton) rootView.findViewById(R.id.fab_clear_filter);
         floatButtonClear.setOnLongClickListener(new View.OnLongClickListener() {
@@ -73,8 +96,6 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
         floatButtonSelective.setOnClickListener(listener);
         floatButtonHospital.setOnClickListener(listener);
         floatButtonClear.setOnClickListener(listener);
-
-        checkPermission();
 
         return rootView;
     }
@@ -113,8 +134,6 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
             dialog.show();
         }
 
-
-
     }
 
     @Override
@@ -139,10 +158,10 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
             return;
         }
 
-        map.setPadding(0, 170, 0, 0);
-
-        map.getUiSettings().setMapToolbarEnabled(false);
         map.setMyLocationEnabled(true);
+
+        map.setPadding(0, 170, 0, 0);
+        map.getUiSettings().setMapToolbarEnabled(false);
 
         createMarkers();
 
@@ -210,33 +229,45 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
 
         switch (v.getId()){
             case R.id.fab_battery:
+                setFABColor(floatbuttonBattery);
                 filterBy("Eletrônico");
                 break;
             case R.id.fab_oil:
+                setFABColor(floatbuttonOil);
                 filterBy("Óleo");
                 break;
             case R.id.fab_chemistry:
+                setFABColor(floatbuttonChemistry);
                 filterBy("Químico");
                 break;
             case R.id.fab_hospital:
+                setFABColor(floatButtonHospital);
                 filterBy("Hospitalar");
                 break;
             case R.id.fab_selective:
+                setFABColor(floatButtonSelective);
                 filterBy("Coleta Seletiva");
                 break;
             case R.id.fab_clear_filter:
                 options.clear();
                 map.clear();
                 createMarkers();
-                floatButtonClear.setVisibility(View.INVISIBLE);
-                defaultColors();
+                floatButtonClear.animate().scaleX(0).scaleY(0).start();
+                defaultColorAll();
                 break;
             default:
                 break;
         }
     }
 
-    private void defaultColors(){
+    private void setFABColor(FloatingActionButton floatButton){
+        if (floatButton.getColorNormal() == Color.parseColor("#fc9b0d"))
+            floatButton.setColorNormal(Color.parseColor("#bf7018"));
+        else
+            floatButton.setColorNormal(Color.parseColor("#fc9b0d"));
+    }
+
+    private void defaultColorAll(){
         floatbuttonBattery.setColorNormal(Color.parseColor("#fc9b0d"));
         floatbuttonChemistry.setColorNormal(Color.parseColor("#fc9b0d"));
         floatButtonSelective.setColorNormal(Color.parseColor("#fc9b0d"));
@@ -246,23 +277,10 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
 
     private void filterBy(String trashType){
 
-        options.add(trashType);
-
-        if (!options.isEmpty())
-            floatButtonClear.setVisibility(View.VISIBLE);
-
-        for (int i = 0; i < options.size(); i++) {
-            if (options.get(i).equals("Eletrônico"))
-                floatbuttonBattery.setColorNormal(Color.parseColor("#bf7018"));
-            if (options.get(i).equals("Químico"))
-                floatbuttonChemistry.setColorNormal(Color.parseColor("#bf7018"));
-            if (options.get(i).equals("Coleta Seletiva"))
-                floatButtonSelective.setColorNormal(Color.parseColor("#bf7018"));
-            if (options.get(i).equals("Hospitalar"))
-                floatButtonHospital.setColorNormal(Color.parseColor("#bf7018"));
-            if (options.get(i).equals("Óleo"))
-                floatbuttonOil.setColorNormal(Color.parseColor("#bf7018"));
-        }
+        if (!options.contains(trashType))
+            options.add(trashType);
+        else
+            options.remove(trashType);
 
         map.clear();
 
@@ -271,6 +289,11 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
             if (mark.getSnippet().contains(option))
                 map.addMarker(mark);
         }
+
+        if (!options.isEmpty())
+            floatButtonClear.animate().scaleX(1).scaleY(1).setDuration(200).start();
+        else
+            floatButtonClick(floatButtonClear);
 
     }
 
