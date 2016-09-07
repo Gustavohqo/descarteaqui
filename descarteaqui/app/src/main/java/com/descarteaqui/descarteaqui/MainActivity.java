@@ -12,6 +12,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
+import com.facebook.Profile;
 import android.widget.Toast;
 
 import com.descarteaqui.descarteaqui.fragments.MapsFragment;
@@ -25,10 +28,18 @@ public class MainActivity extends AppCompatActivity
     NavigationView navigationView = null;
     Toolbar toolbar = null;
 
+    private TextView nome;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        System.out.println(App.getInstance());
+        if (App.getInstance().getProfile() != null){
+            View header=navigationView.getHeaderView(0);
+            nome = (TextView)header.findViewById(R.id.textView);
+            nome.setText("Olá, " + App.getInstance().getProfile().getFirstName());
+        }
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -46,6 +57,12 @@ public class MainActivity extends AppCompatActivity
 
         navigationView.setNavigationItemSelectedListener(this);
 
+    }
+
+    private void refreshScreenInformation() {
+        View header=navigationView.getHeaderView(0);
+        nome = (TextView)header.findViewById(R.id.textView);
+        nome.setText("Olá, " + Profile.getCurrentProfile().getFirstName());
     }
 
     @Override
