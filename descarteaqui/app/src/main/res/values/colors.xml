@@ -5,7 +5,9 @@
     <color name="colorPrimaryDark">#006E51</color>
     <color name="colorAccent">#d97c14</color>
 
+    <color name="colorTitle">#01916b</color>
+
     <color name="colorFAB">#fc9b0d</color>
-    <color name="colorFABPressed">#ed8f2f</color>
+    <color name="colorFABPressed">#bf7018</color>
 
 </resources>

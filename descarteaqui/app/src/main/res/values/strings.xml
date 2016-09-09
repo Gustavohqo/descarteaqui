@@ -10,14 +10,15 @@
     <string name="map_icon">Mapa</string>
     <string name="tip_icon">Dicas</string>
     <string name="petition_icon">Petições</string>
-    <string name="report_icon">Relatórios</string>
     <string name="account_icon">Contas</string>
     <string name="config_separator">Configurações</string>
 
     <!-- Filters -->
     <string name="filter_oil">Óleo</string>
-    <string name="filter_battery">Bateria</string>
+    <string name="filter_battery">Eletrônico</string>
     <string name="filter_chemistry">Químico</string>
-
+    <string name="filter_hospital">Hospitalar</string>
+    <string name="filter_selective">Coleta Seletiva</string>
+    <string name="filter_clear">Limpar Filtro</string>
 
 </resources>

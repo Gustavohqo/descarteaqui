@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:fab="http://schemas.android.com/apk/res-auto">
@@ -8,17 +8,33 @@
         android:id="@+id/map"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        class="com.google.android.gms.maps.MapFragment" />
+        class="com.google.android.gms.maps.MapFragment"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="120dp"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="GPS Desativado."
+        android:textColor="@android:color/white"
+        android:id="@+id/gps_error"
+        android:gravity="bottom"
+        android:paddingBottom="20dp"
+        android:textSize="20sp"
+        android:visibility="visible"
+        android:background="#fc4242"
+        android:textAlignment="center"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true" />
 
     <com.github.clans.fab.FloatingActionMenu
-        android:id="@+id/social_floating_menu"
+        android:id="@+id/filter_floating_menu"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
-        android:layout_marginBottom="11dp"
-        android:layout_marginLeft="11dp"
-        android:layout_marginRight="11dp"
+        android:layout_marginBottom="6dp"
+        android:layout_marginRight="6dp"
         fab:menu_animationDelayPerItem="55"
         fab:menu_backgroundColor="@android:color/transparent"
         fab:menu_buttonSpacing="0dp"
@@ -27,7 +43,7 @@
         fab:menu_colorRipple="#99d4d4d4"
         fab:menu_fab_label="Opções de Filtro"
         fab:menu_fab_size="normal"
-        fab:menu_icon="@drawable/ic_location_searching_white_24dp"
+        fab:menu_icon="@drawable/ic_search"
         fab:menu_labels_colorNormal="#333"
         fab:menu_labels_colorPressed="#444"
         fab:menu_labels_colorRipple="#66efecec"
@@ -81,6 +97,44 @@
             fab:fab_size="mini"
             fab:fab_label="@string/filter_chemistry"/>
 
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/fab_hospital"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_hospital_white_24p"
+            fab:fab_colorNormal="@color/colorFAB"
+            fab:fab_colorPressed="@color/colorFABPressed"
+            fab:fab_size="mini"
+            fab:fab_label="@string/filter_hospital"/>
+
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/fab_selective"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_recycle_white_24dp"
+            fab:fab_colorNormal="@color/colorFAB"
+            fab:fab_colorPressed="@color/colorFABPressed"
+            fab:fab_size="mini"
+            fab:fab_label="@string/filter_selective"/>
+
     </com.github.clans.fab.FloatingActionMenu>
 
-</FrameLayout>
+    <com.github.clans.fab.FloatingActionButton
+        android:id="@+id/fab_clear_filter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_clear_white_24dp"
+        fab:fab_colorNormal="@color/colorFAB"
+        fab:fab_colorPressed="@color/colorFABPressed"
+        fab:fab_size="mini"
+        fab:fab_label="@string/filter_battery"
+        android:layout_alignBottom="@+id/filter_floating_menu"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="20dp"
+        fab:fab_showShadow="false"
+        android:layout_marginLeft="10dp"
+        android:scaleX="0"
+        android:scaleY="0"/>
+
+
+</RelativeLayout>
