@@ -6,12 +6,14 @@ package com.descarteaqui.descarteaqui;
 import android.app.Application;
 
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.auth.api.signin.GoogleSignInResult;
+import com.facebook.Profile;
+
 
 public class App extends Application{
 
     private static App appSingleton;
     private GoogleSignInAccount info;
+    private Profile facebookProfile;
 
     public static App getInstance(){
         return appSingleton;
@@ -22,6 +24,9 @@ public class App extends Application{
         appSingleton = this;
     }
 
+    public Profile getFacebookProfile() {return facebookProfile; }
+
+    public void setFacebookProfile(Profile profile){this.facebookProfile = profile;}
 
     public GoogleSignInAccount getUserGoogleInfo() {
         return info;

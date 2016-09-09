@@ -2,18 +2,25 @@ package com.descarteaqui.descarteaqui;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
+import com.facebook.AccessToken;
+import com.facebook.AccessTokenTracker;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
+import com.facebook.Profile;
+import com.facebook.ProfileTracker;
+
+
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -30,6 +37,8 @@ public class AccountsActivity extends AppCompatActivity  implements
     private TextView info;
     private LoginButton loginButton;
     private CallbackManager callbackManager;
+    private ProfileTracker mProfileTracker;
+
 
     private static final String TAG = "SignInActivity";
     private static final int RC_SIGN_IN = 9001;
@@ -49,16 +58,27 @@ public class AccountsActivity extends AppCompatActivity  implements
         mStatusTextView = (TextView) findViewById(R.id.status);
 
         loginButton = (LoginButton)findViewById(R.id.login_button);
+
+        // facebook login
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
-                info.setText(
-                        "User ID: "
-                        + loginResult.getAccessToken().getUserId()
-                        + "\n" +
-                        "Auth Token: "
-                        + loginResult.getAccessToken().getToken()
-                );
+                if(Profile.getCurrentProfile() == null) {
+                    mProfileTracker = new ProfileTracker() {
+                        @Override
+                        protected void onCurrentProfileChanged(Profile profile, Profile profile2) {
+                            System.out.println("Entrei no onCurrent Profile changed");
+                            System.out.println("Logado como " + profile2.getFirstName());
+                            handleSignInFacebook(profile2);
+                            mProfileTracker.stopTracking();
+                        }
+                    };
+                    // no need to call startTracking() on mProfileTracker
+                    // because it is called by its constructor, internally.
+                }
+                else {
+
+                }
                 findViewById(R.id.sign_in_button).setEnabled(false);
             }
 
@@ -72,6 +92,19 @@ public class AccountsActivity extends AppCompatActivity  implements
                 info.setText("Login attempt failed.");
             }
         });
+
+        // facebook logout
+        AccessTokenTracker accessTokenTracker = new AccessTokenTracker() {
+            @Override
+            protected void onCurrentAccessTokenChanged(
+                    AccessToken oldAccessToken,
+                    AccessToken currentAccessToken) {
+
+                if (currentAccessToken == null){
+                    handleSignInFacebook(null);
+                }
+            }
+        };
 
         //Google
 
@@ -92,11 +125,10 @@ public class AccountsActivity extends AppCompatActivity  implements
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
 
-
-
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        System.out.println("Entrei no onActivityResult");
         super.onActivityResult(requestCode, resultCode, data);
         callbackManager.onActivityResult(requestCode, resultCode, data);
 
@@ -104,6 +136,7 @@ public class AccountsActivity extends AppCompatActivity  implements
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
             handleSignInResult(result);
         }
+
     }
 
     @Override
@@ -140,6 +173,12 @@ public class AccountsActivity extends AppCompatActivity  implements
                 }
             });
         }
+    }
+
+    private void handleSignInFacebook(Profile newProfile){
+        App.getInstance().setFacebookProfile(newProfile);
+        startActivity(new Intent(getApplicationContext(), MainActivity.class));
+        finish();
     }
 
     private void handleSignInResult(GoogleSignInResult result) {

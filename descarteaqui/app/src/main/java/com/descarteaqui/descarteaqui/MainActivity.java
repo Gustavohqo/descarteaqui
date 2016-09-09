@@ -12,6 +12,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,14 +22,11 @@ import android.widget.TextView;
 import com.descarteaqui.descarteaqui.fragments.MapsFragment;
 import com.descarteaqui.descarteaqui.fragments.PetiFragment;
 import com.descarteaqui.descarteaqui.fragments.TipFragment;
+import com.facebook.AccessToken;
+import com.facebook.FacebookSdk;
+import com.facebook.Profile;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.squareup.picasso.Picasso;
-
-import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.net.URI;
-import java.net.URL;
 
 
 public class MainActivity extends AppCompatActivity
@@ -37,6 +35,7 @@ public class MainActivity extends AppCompatActivity
     NavigationView navigationView = null;
     Toolbar toolbar = null;
     private GoogleSignInAccount userInfo;
+    private Profile facebookProfile;
     private TextView email;
     private ImageView photo;
     private TextView name;
@@ -66,6 +65,30 @@ public class MainActivity extends AppCompatActivity
             refreshScreenInformation();
         }
 
+
+        if(App.getInstance() != null && App.getInstance().getFacebookProfile() != null) {
+            facebookProfile = App.getInstance().getFacebookProfile();
+            refreshFacebookInformation();
+        }
+
+
+
+    }
+
+    private void refreshFacebookInformation(){
+        View header=navigationView.getHeaderView(0);
+        // Bitmap bmp = BitmapFactory.decodeStream(userInfo.getPhotoUrl());
+        photo = (ImageView)header.findViewById(R.id.imageView);
+        email = (TextView)header.findViewById(R.id.textView);
+        name = (TextView)header.findViewById(R.id.nameView);
+
+        name.setText("Bem vindo, " + facebookProfile.getFirstName());
+        email.setText(" ");
+        photo.setImageURI(facebookProfile.getProfilePictureUri(120,120));
+
+        Picasso.with(this).load(facebookProfile.getProfilePictureUri(120,120))
+                .resize(120, 120)
+                .into(photo);
 
     }
 
