@@ -8,6 +8,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
+import android.content.Context;
+
 
 import com.facebook.AccessToken;
 import com.facebook.AccessTokenTracker;
@@ -34,11 +37,10 @@ import com.google.android.gms.common.api.Status;
 public class AccountsActivity extends AppCompatActivity  implements
         GoogleApiClient.OnConnectionFailedListener,
         View.OnClickListener{
-    private TextView info;
+
     private LoginButton loginButton;
     private CallbackManager callbackManager;
     private ProfileTracker mProfileTracker;
-
 
     private static final String TAG = "SignInActivity";
     private static final int RC_SIGN_IN = 9001;
@@ -47,13 +49,14 @@ public class AccountsActivity extends AppCompatActivity  implements
     private TextView mStatusTextView;
     private ProgressDialog mProgressDialog;
 
+    private int countToast = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         FacebookSdk.sdkInitialize(getApplicationContext());
         callbackManager = CallbackManager.Factory.create();
         setContentView(R.layout.activity_accounts);
-        info = (TextView)findViewById(R.id.info);
 
         mStatusTextView = (TextView) findViewById(R.id.status);
 
@@ -71,25 +74,24 @@ public class AccountsActivity extends AppCompatActivity  implements
                             System.out.println("Logado como " + profile2.getFirstName());
                             handleSignInFacebook(profile2);
                             mProfileTracker.stopTracking();
+                            countToast = 0;
+
                         }
                     };
                     // no need to call startTracking() on mProfileTracker
                     // because it is called by its constructor, internally.
                 }
-                else {
-
-                }
                 findViewById(R.id.sign_in_button).setEnabled(false);
+                toastLogin();
             }
-
             @Override
             public void onCancel() {
-                info.setText("Login attempt canceled.");
+
             }
 
             @Override
             public void onError(FacebookException e) {
-                info.setText("Login attempt failed.");
+
             }
         });
 
@@ -99,7 +101,6 @@ public class AccountsActivity extends AppCompatActivity  implements
             protected void onCurrentAccessTokenChanged(
                     AccessToken oldAccessToken,
                     AccessToken currentAccessToken) {
-
                 if (currentAccessToken == null){
                     handleSignInFacebook(null);
                 }
@@ -107,7 +108,6 @@ public class AccountsActivity extends AppCompatActivity  implements
         };
 
         //Google
-
         // Button listeners
         findViewById(R.id.sign_in_button).setOnClickListener(this);
         findViewById(R.id.sign_out_button).setOnClickListener(this);
@@ -115,7 +115,11 @@ public class AccountsActivity extends AppCompatActivity  implements
         findViewById(R.id.sign_out_button).setVisibility(View.GONE);
         findViewById(R.id.disconnect_button).setVisibility(View.GONE);
 
-
+        //if facebook login was successful
+        if(Profile.getCurrentProfile() != null) {
+            findViewById(R.id.sign_in_button).setEnabled(false);
+        }
+        //Google
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
                 .build();
@@ -142,7 +146,6 @@ public class AccountsActivity extends AppCompatActivity  implements
     @Override
     public void onStart() {
         super.onStart();
-
         OptionalPendingResult<GoogleSignInResult> opr = Auth.GoogleSignInApi.silentSignIn(mGoogleApiClient);
         if (opr.isDone()) {
             // If the user's cached credentials are valid, the OptionalPendingResult will be "done"
@@ -169,7 +172,6 @@ public class AccountsActivity extends AppCompatActivity  implements
                     }else{
                         updateUI(false);
                     }
-
                 }
             });
         }
@@ -177,20 +179,23 @@ public class AccountsActivity extends AppCompatActivity  implements
 
     private void handleSignInFacebook(Profile newProfile){
         App.getInstance().setFacebookProfile(newProfile);
+        if (newProfile == null && countToast == 0){
+            toastLogout();
+            countToast++;
+        }
         startActivity(new Intent(getApplicationContext(), MainActivity.class));
         finish();
     }
 
     private void handleSignInResult(GoogleSignInResult result) {
         Log.d(TAG, "handleSignInResult:" + result.isSuccess());
-
         if (result.isSuccess()) {
             // Signed in successfully, show authenticated UI.
             GoogleSignInAccount acct = result.getSignInAccount();
             App.getInstance().setUserGoogleInfo(acct);
-
-          startActivity(new Intent(getApplicationContext(), MainActivity.class));
-          finish();
+            toastLogin();
+            startActivity(new Intent(getApplicationContext(), MainActivity.class));
+            finish();
         } else {
             updateUI(false);
         }
@@ -211,7 +216,11 @@ public class AccountsActivity extends AppCompatActivity  implements
                     @Override
                     public void onResult(Status status) {
                         // [START_EXCLUDE]
+                        toastLogout();
                         updateUI(false);
+                        App.getInstance().setUserGoogleInfo(null);
+                        startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                        finish();
                         // [END_EXCLUDE]
                     }
                 });
@@ -225,7 +234,11 @@ public class AccountsActivity extends AppCompatActivity  implements
                     @Override
                     public void onResult(Status status) {
                         // [START_EXCLUDE]
+                        toastLogout();
                         updateUI(false);
+                        App.getInstance().setUserGoogleInfo(null);
+                        startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                        finish();
                         // [END_EXCLUDE]
                     }
                 });
@@ -245,7 +258,6 @@ public class AccountsActivity extends AppCompatActivity  implements
             mProgressDialog.setMessage(getString(R.string.loading));
             mProgressDialog.setIndeterminate(true);
         }
-
         mProgressDialog.show();
     }
 
@@ -254,7 +266,7 @@ public class AccountsActivity extends AppCompatActivity  implements
             mProgressDialog.hide();
         }
     }
-
+    // Update UI after signin or signout on Google
     private void updateUI(boolean signedIn) {
         if (signedIn) {
             findViewById(R.id.sign_in_button).setVisibility(View.GONE);
@@ -264,7 +276,6 @@ public class AccountsActivity extends AppCompatActivity  implements
             findViewById(R.id.login_button).setEnabled(false);
         } else {
             mStatusTextView.setText(R.string.signed_out);
-
             findViewById(R.id.sign_in_button).setVisibility(View.VISIBLE);
             findViewById(R.id.sign_out_button).setVisibility(View.GONE);
             findViewById(R.id.disconnect_button).setVisibility(View.GONE);
@@ -288,6 +299,20 @@ public class AccountsActivity extends AppCompatActivity  implements
         }
     }
 
+    public void toastLogin() {
+        Context contexto = getApplicationContext();
+        String texto = "Login realizado com sucesso.";
+        int duracao = Toast.LENGTH_LONG;
+        Toast toast = Toast.makeText(contexto, texto, duracao);
+        toast.show();
+    }
 
+    public void toastLogout() {
+        Context contexto = getApplicationContext();
+        String texto = "Você deslogou da sua conta.";
+        int duracao = Toast.LENGTH_LONG;
+        Toast toast = Toast.makeText(contexto, texto, duracao);
+        toast.show();
+    }
 
 }

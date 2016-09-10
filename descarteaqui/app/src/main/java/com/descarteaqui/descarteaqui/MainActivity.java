@@ -4,6 +4,7 @@ import android.app.FragmentManager;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.app.Fragment;
@@ -26,6 +27,8 @@ import com.facebook.AccessToken;
 import com.facebook.FacebookSdk;
 import com.facebook.Profile;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInApi;
+import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.squareup.picasso.Picasso;
 
 
@@ -60,19 +63,13 @@ public class MainActivity extends AppCompatActivity
 
         navigationView.setNavigationItemSelectedListener(this);
 
-        if(App.getInstance() != null && App.getInstance().getUserGoogleInfo() != null){
+        if(App.getInstance() != null && App.getInstance().getUserGoogleInfo() != null) {
             userInfo = App.getInstance().getUserGoogleInfo();
             refreshScreenInformation();
-        }
-
-
-        if(App.getInstance() != null && App.getInstance().getFacebookProfile() != null) {
+        }else if(App.getInstance() != null && App.getInstance().getFacebookProfile() != null) {
             facebookProfile = App.getInstance().getFacebookProfile();
             refreshFacebookInformation();
         }
-
-
-
     }
 
     private void refreshFacebookInformation(){
@@ -89,7 +86,6 @@ public class MainActivity extends AppCompatActivity
         Picasso.with(this).load(facebookProfile.getProfilePictureUri(120,120))
                 .resize(120, 120)
                 .into(photo);
-
     }
 
     private void refreshScreenInformation()  {
