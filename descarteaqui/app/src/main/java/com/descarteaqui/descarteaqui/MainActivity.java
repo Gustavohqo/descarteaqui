@@ -14,7 +14,7 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.descarteaqui.descarteaqui.fragments.MapsFragment;
-import com.descarteaqui.descarteaqui.fragments.PetiFragment;
+import com.descarteaqui.descarteaqui.fragments.PetitionsFragment;
 import com.descarteaqui.descarteaqui.fragments.TipFragment;
 
 
@@ -94,7 +94,7 @@ public class MainActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_petitions) {
 
-            fragment = new PetiFragment();
+            fragment = new PetitionsFragment();
 
         } else if (id == R.id.nav_accounts) {
             Toast.makeText(getApplicationContext(),"contas", Toast.LENGTH_SHORT).show();
