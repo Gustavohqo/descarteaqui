@@ -21,4 +21,18 @@
     <string name="filter_selective">Coleta Seletiva</string>
     <string name="filter_clear">Limpar Filtro</string>
 
+    <!-- Facebook ID -->
+    <string name="facebook_app_id">1249709945062245</string>
+
+    <!--Google -->
+    <string name="signed_in_fmt">Signed in as: %s</string>
+    <string name="signed_in">Signed in</string>
+    <string name="signing_in">Signing in…</string>
+    <string name="signed_out">Signed out</string>
+    <string name="sign_out">Sign Out</string>
+    <string name="disconnect">Disconnect</string>
+    <string name="refresh_token">Get Fresh Token</string>
+    <string name="loading">Loading…</string>
+    <string name="server_client_id">62243537272-mp3k83uqkalgtmfjs8sensihomcfn1bl.apps.googleusercontent.com</string>
+
 </resources>
