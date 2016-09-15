@@ -1,4 +1,4 @@
-package com.descarteaqui.descarteaqui;
+package com.descarteaqui.descarteaqui.controllers;
 
 /**
  * Created by kelvin on 07/09/16.

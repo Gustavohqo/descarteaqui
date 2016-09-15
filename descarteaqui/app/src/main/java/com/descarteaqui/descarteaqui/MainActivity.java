@@ -2,9 +2,6 @@ package com.descarteaqui.descarteaqui;
 
 import android.app.FragmentManager;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.app.Fragment;
@@ -13,22 +10,20 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.descarteaqui.descarteaqui.activities.AccountsActivity;
+import com.descarteaqui.descarteaqui.controllers.App;
+import com.descarteaqui.descarteaqui.R;
 import com.descarteaqui.descarteaqui.fragments.MapsFragment;
 import com.descarteaqui.descarteaqui.fragments.PetiFragment;
 import com.descarteaqui.descarteaqui.fragments.TipFragment;
-import com.facebook.AccessToken;
-import com.facebook.FacebookSdk;
 import com.facebook.Profile;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.auth.api.signin.GoogleSignInApi;
-import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.squareup.picasso.Picasso;
 
 
@@ -42,6 +37,7 @@ public class MainActivity extends AppCompatActivity
     private TextView email;
     private ImageView photo;
     private TextView name;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,12 +50,12 @@ public class MainActivity extends AppCompatActivity
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
+        drawer.addDrawerListener(toggle);
         toggle.syncState();
 
         navigationView = (NavigationView) findViewById(R.id.nav_view);
 
-        onNavigationItemSelected(navigationView.getMenu().getItem(1).setChecked(true));
+        onNavigationItemSelected(navigationView.getMenu().getItem(0).setChecked(true));
 
         navigationView.setNavigationItemSelectedListener(this);
 
@@ -79,8 +75,8 @@ public class MainActivity extends AppCompatActivity
         email = (TextView)header.findViewById(R.id.textView);
         name = (TextView)header.findViewById(R.id.nameView);
 
-        name.setText("Bem vindo, " + facebookProfile.getFirstName());
-        email.setText(" ");
+        name.setText("Olá, " + facebookProfile.getFirstName());
+        email.setText("Seja bem vindo ao DescarteAqui");
         photo.setImageURI(facebookProfile.getProfilePictureUri(120,120));
 
         Picasso.with(this).load(facebookProfile.getProfilePictureUri(120,120))
@@ -133,7 +129,6 @@ public class MainActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
-    @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
 
@@ -142,21 +137,20 @@ public class MainActivity extends AppCompatActivity
 
         int id = item.getItemId();
 
-        if (id == R.id.nav_map){
-
-            fragment = new MapsFragment();
-
-        } else if (id == R.id.nav_tip) {
-
-            fragment = new TipFragment();
-
-        } else if (id == R.id.nav_petitions) {
-
-            fragment = new PetiFragment();
-
-        } else if (id == R.id.nav_accounts) {
-            Intent intent = new Intent(this, AccountsActivity.class);
-            startActivity(intent);
+        switch (id){
+            case R.id.nav_map:
+                fragment = new MapsFragment();
+                break;
+            case R.id.nav_tip:
+                fragment = new TipFragment();
+                break;
+            case R.id.nav_petitions:
+                fragment = new PetiFragment();
+                break;
+            case R.id.nav_accounts:
+                Intent intent = new Intent(this, AccountsActivity.class);
+                startActivity(intent);
+                break;
         }
 
 

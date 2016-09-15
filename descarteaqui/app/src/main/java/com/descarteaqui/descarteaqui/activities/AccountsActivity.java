@@ -1,8 +1,7 @@
-package com.descarteaqui.descarteaqui;
+package com.descarteaqui.descarteaqui.activities;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -12,6 +11,9 @@ import android.widget.Toast;
 import android.content.Context;
 
 
+import com.descarteaqui.descarteaqui.MainActivity;
+import com.descarteaqui.descarteaqui.controllers.App;
+import com.descarteaqui.descarteaqui.R;
 import com.facebook.AccessToken;
 import com.facebook.AccessTokenTracker;
 import com.facebook.CallbackManager;
