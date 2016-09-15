@@ -137,8 +137,11 @@ public class AccountsActivity extends AppCompatActivity  implements
         callbackManager.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == RC_SIGN_IN) {
+            System.out.println("Entrei no requestCod");
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
+            System.out.println(result);
             handleSignInResult(result);
+
         }
 
     }
