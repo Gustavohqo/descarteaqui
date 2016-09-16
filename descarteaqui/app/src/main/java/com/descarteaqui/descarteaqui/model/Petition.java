@@ -11,8 +11,9 @@ public class Petition {
 
     private String streetName;
     private String districtName;
-    private Date creationDate;
+    private String creationDate;
     private String justification;
+    private final int ID;
     private String creator;
     private int ratesOK;
     private int ratesNG;
@@ -20,14 +21,22 @@ public class Petition {
     private boolean alreadyClickNG = false;
 
 
-    public Petition(String streetName, String districtName, String justification, String creator) {
+    public Petition(int ID, String streetName, String districtName, String justification, String creator) {
+        this.ID = ID;
         this.streetName = streetName;
         this.districtName = districtName;
-        this.creationDate = new Date();
+
+        DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+        this.creationDate = df.format(new Date());
+
         this.justification = justification;
         this.creator = creator;
         this.ratesNG = 0;
         this.ratesOK = 0;
+    }
+
+    public int getID(){
+        return this.ID;
     }
 
     public String getStreetName() {
@@ -47,10 +56,8 @@ public class Petition {
     }
 
     public String getCreationDate() {
-        DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
-        String stringDate = df.format(creationDate);
 
-        return stringDate;
+        return this.creationDate;
     }
 
     public String getJustification() {
@@ -89,6 +96,14 @@ public class Petition {
         }
     }
 
+    public void setRatesNG(int ratesNG){
+        this.ratesNG = ratesNG;
+    }
+
+    public void setRatesOK(int ratesOK){
+        this.ratesOK = ratesOK;
+    }
+
     public int getRatesNG() {
         return ratesNG;
     }
@@ -107,5 +122,9 @@ public class Petition {
             this.ratesNG--;
             this.alreadyClickNG = false;
         }
+    }
+
+    public void setCreationDate(String creationDate) {
+        this.creationDate = creationDate;
     }
 }

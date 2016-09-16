@@ -21,7 +21,7 @@ import android.widget.Toast;
 
 import com.descarteaqui.descarteaqui.R;
 
-import com.descarteaqui.descarteaqui.controllers.MarkersCreator;
+import com.descarteaqui.descarteaqui.controllers.MarkersController;
 import com.descarteaqui.descarteaqui.database.MarkersDB;
 import com.github.clans.fab.FloatingActionButton;
 import com.google.android.gms.maps.GoogleMap;
@@ -52,10 +52,15 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
 
         checkPermission();
 
-        if (!checkGPSEnable())
+        if (!checkGPSEnable()) {
             GPSError.setVisibility(View.VISIBLE);
-        else
+        } else {
+            if (map != null) {
+                createMarkers();
+            }
+
             GPSError.setVisibility(View.INVISIBLE);
+        }
 
         super.onResume();
     }
@@ -107,7 +112,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
 
         // Populate the database
         if (markers == null) {
-            MarkersCreator.createMarkers(getActivity());
+            MarkersController.createMarkers(getActivity());
         }
 
         return rootView;
@@ -178,7 +183,8 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
         map.getUiSettings().setMapToolbarEnabled(false);
 
         // Create the markers in map
-        createMarkers();
+        if (checkGPSEnable())
+            createMarkers();
 
     }
 

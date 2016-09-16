@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.descarteaqui.descarteaqui.R;
 import com.descarteaqui.descarteaqui.adapter.PetitionAdapter;
+import com.descarteaqui.descarteaqui.controllers.PetitionController;
 import com.descarteaqui.descarteaqui.model.Petition;
 
 import java.util.ArrayList;
@@ -23,9 +24,7 @@ import java.util.List;
 public class RatePetitionsFragment extends Fragment {
 
     private RecyclerView mRecyclerView;
-    private List<Petition> allPetitionsList = new ArrayList<>();
-    private List<Petition> myPetitionsList = new ArrayList<>();
-    private List<Petition> activeList;
+    private List<Petition> activeList = new ArrayList<>();;
     private TextView tabAllPetitions;
     private TextView tabMyPetitions;
     private TextView activeTab;
@@ -78,16 +77,14 @@ public class RatePetitionsFragment extends Fragment {
         int alphaMyPetitions = 0, alphaAllPetitions = 0;
 
         if (activeTab.equals(tabAllPetitions)){
-            activeList = allPetitionsList;
-            addItems(1);
+            activeList = allPetitionsList();
             scaleMyPetitions = 1;
             scaleAllPetitions = (float) 1.1;
             alphaAllPetitions = 200;
             alphaMyPetitions = 70;
             value = -10000;
         } else if (activeTab.equals(tabMyPetitions)){
-            activeList = myPetitionsList;
-            addItems(10);
+            activeList = myPetitionsList();
             scaleMyPetitions = (float) 1.1;
             scaleAllPetitions = 1;
             alphaAllPetitions = 70;
@@ -121,11 +118,20 @@ public class RatePetitionsFragment extends Fragment {
 
     }
 
-    private void addItems(int qtd){
+    private List<Petition> myPetitionsList(){
         activeList.clear();
-        for (int i = 0; i < qtd; i++) {
-            activeList.add(new Petition("Rua do " + i, "Bairro do " + i, "Pq sim ne " + i, "Eu sou " + i));
-        }
+        List<Petition> lista = PetitionController.getMyPetitions(getActivity(), "asd");
+        activeList.addAll(lista);
+
+        return activeList;
+    }
+
+    private List<Petition> allPetitionsList(){
+        activeList.clear();
+        List<Petition> lista = PetitionController.getAllPetitions(getActivity(), "asd");
+        activeList.addAll(lista);
+
+        return activeList;
     }
 
 }

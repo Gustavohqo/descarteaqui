@@ -1,6 +1,7 @@
 package com.descarteaqui.descarteaqui;
 
 import android.app.FragmentManager;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -8,6 +9,7 @@ import android.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -144,7 +146,32 @@ public class MainActivity extends AppCompatActivity
                 fragment = new TipFragment();
                 break;
             case R.id.nav_petitions:
-                fragment = new PetitionsFragment();
+                if (!isUserLogged()) {
+                    final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+                    alertDialogBuilder.setMessage("É preciso estar logado para ter acesso ao menu de Petições.\n\nVocê deseja efetuar o login?");
+
+                    alertDialogBuilder.setPositiveButton("Sim", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface arg0, int arg1) {
+                            arg0.dismiss();
+                            Intent intent = new Intent(getApplicationContext(), AccountsActivity.class);
+                            startActivity(intent);
+                        }
+                    });
+
+                    alertDialogBuilder.setNegativeButton("Não", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface arg0, int arg1) {
+                            arg0.cancel();
+                        }
+                    });
+
+                    AlertDialog alertDialog = alertDialogBuilder.create();
+                    alertDialog.show();
+                } else {
+                    fragment = new PetitionsFragment();
+                }
+
                 break;
             case R.id.nav_accounts:
                 Intent intent = new Intent(this, AccountsActivity.class);
@@ -161,6 +188,11 @@ public class MainActivity extends AppCompatActivity
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
+        return true;
+    }
+
+    private boolean isUserLogged(){
+
         return true;
     }
 }

@@ -16,7 +16,7 @@ import java.util.List;
 /**
  * Created by Gabriel on 15/09/2016.
  */
-public abstract class MarkersCreator {
+public abstract class MarkersController {
 
     private static MarkersDB MarkersDB;
 
