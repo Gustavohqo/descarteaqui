@@ -4,9 +4,11 @@ package com.descarteaqui.descarteaqui;
  * Created by kelvin on 07/09/16.
  */
 import android.app.Application;
+import android.content.SharedPreferences;
 
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.facebook.Profile;
+import com.google.gson.Gson;
 
 
 public class App extends Application{

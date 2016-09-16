@@ -2,6 +2,8 @@ package com.descarteaqui.descarteaqui;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -12,6 +14,7 @@ import android.widget.Toast;
 import android.content.Context;
 
 
+import com.descarteaqui.descarteaqui.fragments.GeneralMethods;
 import com.facebook.AccessToken;
 import com.facebook.AccessTokenTracker;
 import com.facebook.CallbackManager;
@@ -33,6 +36,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.OptionalPendingResult;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
+import com.google.gson.Gson;
 
 public class AccountsActivity extends AppCompatActivity  implements
         GoogleApiClient.OnConnectionFailedListener,
@@ -137,11 +141,8 @@ public class AccountsActivity extends AppCompatActivity  implements
         callbackManager.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == RC_SIGN_IN) {
-            System.out.println("Entrei no requestCod");
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
-            System.out.println(result);
             handleSignInResult(result);
-
         }
 
     }
@@ -181,7 +182,10 @@ public class AccountsActivity extends AppCompatActivity  implements
     }
 
     private void handleSignInFacebook(Profile newProfile){
-        App.getInstance().setFacebookProfile(newProfile);
+        Gson gson = new Gson();
+        String stringResult = gson.toJson(newProfile);
+        GeneralMethods.saveData(AccountsActivity.this, "facebookObject", stringResult);
+
         if (newProfile == null && countToast == 0){
             toastLogout();
             countToast++;
@@ -195,7 +199,9 @@ public class AccountsActivity extends AppCompatActivity  implements
         if (result.isSuccess()) {
             // Signed in successfully, show authenticated UI.
             GoogleSignInAccount acct = result.getSignInAccount();
-            App.getInstance().setUserGoogleInfo(acct);
+            Gson gson = new Gson();
+            String stringResult = gson.toJson(result);
+            GeneralMethods.saveData(AccountsActivity.this, "googleObject", stringResult);
             toastLogin();
             startActivity(new Intent(getApplicationContext(), MainActivity.class));
             finish();
@@ -221,7 +227,7 @@ public class AccountsActivity extends AppCompatActivity  implements
                         // [START_EXCLUDE]
                         toastLogout();
                         updateUI(false);
-                        App.getInstance().setUserGoogleInfo(null);
+                        GeneralMethods.saveData(AccountsActivity.this, "googleObject", null);
                         startActivity(new Intent(getApplicationContext(), MainActivity.class));
                         finish();
                         // [END_EXCLUDE]
@@ -239,7 +245,7 @@ public class AccountsActivity extends AppCompatActivity  implements
                         // [START_EXCLUDE]
                         toastLogout();
                         updateUI(false);
-                        App.getInstance().setUserGoogleInfo(null);
+                        GeneralMethods.saveData(AccountsActivity.this, "googleObject", null);
                         startActivity(new Intent(getApplicationContext(), MainActivity.class));
                         finish();
                         // [END_EXCLUDE]

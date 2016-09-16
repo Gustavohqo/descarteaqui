@@ -2,6 +2,7 @@ package com.descarteaqui.descarteaqui;
 
 import android.app.FragmentManager;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
@@ -20,6 +21,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.descarteaqui.descarteaqui.fragments.GeneralMethods;
 import com.descarteaqui.descarteaqui.fragments.MapsFragment;
 import com.descarteaqui.descarteaqui.fragments.PetiFragment;
 import com.descarteaqui.descarteaqui.fragments.TipFragment;
@@ -29,6 +31,7 @@ import com.facebook.Profile;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInApi;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
+import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 
 
@@ -63,13 +66,25 @@ public class MainActivity extends AppCompatActivity
 
         navigationView.setNavigationItemSelectedListener(this);
 
-        if(App.getInstance() != null && App.getInstance().getUserGoogleInfo() != null) {
-            userInfo = App.getInstance().getUserGoogleInfo();
-            refreshScreenInformation();
-        }else if(App.getInstance() != null && App.getInstance().getFacebookProfile() != null) {
-            facebookProfile = App.getInstance().getFacebookProfile();
-            refreshFacebookInformation();
+
+        Gson gson = new Gson();
+        String googleJson =  GeneralMethods.getData(MainActivity.this, "googleObject", "");
+        String facebookJson =  GeneralMethods.getData(MainActivity.this, "facebookObject", "");
+
+        if(googleJson != null) {
+            GoogleSignInResult app = gson.fromJson(googleJson, GoogleSignInResult.class);
+            if(app != null) {
+                userInfo = app.getSignInAccount();
+                refreshScreenInformation();
+            }
+        }else if(facebookJson != null){
+            Profile app = gson.fromJson(facebookJson, Profile.class);
+            if(app != null) {
+                facebookProfile = app;
+                refreshScreenInformation();
+            }
         }
+
     }
 
     private void refreshFacebookInformation(){

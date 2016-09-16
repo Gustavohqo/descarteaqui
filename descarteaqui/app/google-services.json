@@ -1,1 +1,48 @@
-{"installed":{"client_id":"62243537272-2sfbit2olu69c0te3c1865qdth9r3ike.apps.googleusercontent.com","project_id":"firebase-descarteaqui","auth_uri":"https://accounts.google.com/o/oauth2/auth","token_uri":"https://accounts.google.com/o/oauth2/token","auth_provider_x509_cert_url":"https://www.googleapis.com/oauth2/v1/certs","redirect_uris":["urn:ietf:wg:oauth:2.0:oob","http://localhost"]}}
+{
+  "project_info": {
+    "project_number": "570793928341",
+    "project_id": "descarteaqui-60359"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:570793928341:android:3d71211afd63ec20",
+        "android_client_info": {
+          "package_name": "com.descarteaqui.descarteaqui"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "570793928341-qibm87qkofhn1vlf80ra1627rjutb5bb.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.descarteaqui.descarteaqui",
+            "certificate_hash": "D2668EB55546F641CE6A05433F22B25AFB02E483"
+          }
+        },
+        {
+          "client_id": "570793928341-89tb2hlbqdsceih5cao05d8kq415cc2p.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDrnebI_5yaCVYy29rETmlKD-FSb7CtwTk"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
