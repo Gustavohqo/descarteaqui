@@ -18,9 +18,8 @@ import android.widget.TextView;
 
 import com.descarteaqui.descarteaqui.activities.AccountsActivity;
 import com.descarteaqui.descarteaqui.controllers.App;
-import com.descarteaqui.descarteaqui.R;
 import com.descarteaqui.descarteaqui.fragments.MapsFragment;
-import com.descarteaqui.descarteaqui.fragments.PetiFragment;
+import com.descarteaqui.descarteaqui.fragments.PetitionsFragment;
 import com.descarteaqui.descarteaqui.fragments.TipFragment;
 import com.facebook.Profile;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -145,7 +144,7 @@ public class MainActivity extends AppCompatActivity
                 fragment = new TipFragment();
                 break;
             case R.id.nav_petitions:
-                fragment = new PetiFragment();
+                fragment = new PetitionsFragment();
                 break;
             case R.id.nav_accounts:
                 Intent intent = new Intent(this, AccountsActivity.class);

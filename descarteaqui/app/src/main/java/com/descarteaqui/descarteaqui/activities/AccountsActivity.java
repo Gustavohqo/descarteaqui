@@ -72,8 +72,6 @@ public class AccountsActivity extends AppCompatActivity  implements
                     mProfileTracker = new ProfileTracker() {
                         @Override
                         protected void onCurrentProfileChanged(Profile profile, Profile profile2) {
-                            System.out.println("Entrei no onCurrent Profile changed");
-                            System.out.println("Logado como " + profile2.getFirstName());
                             handleSignInFacebook(profile2);
                             mProfileTracker.stopTracking();
                             countToast = 0;
@@ -134,7 +132,6 @@ public class AccountsActivity extends AppCompatActivity  implements
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        System.out.println("Entrei no onActivityResult");
         super.onActivityResult(requestCode, resultCode, data);
         callbackManager.onActivityResult(requestCode, resultCode, data);
 
@@ -152,7 +149,6 @@ public class AccountsActivity extends AppCompatActivity  implements
         if (opr.isDone()) {
             // If the user's cached credentials are valid, the OptionalPendingResult will be "done"
             // and the GoogleSignInResult will be available instantly.
-            Log.d(TAG, "Got cached sign-in");
             GoogleSignInResult result = opr.get();
             if(result.isSuccess()){
                 updateUI(true);
@@ -190,7 +186,6 @@ public class AccountsActivity extends AppCompatActivity  implements
     }
 
     private void handleSignInResult(GoogleSignInResult result) {
-        Log.d(TAG, "handleSignInResult:" + result.isSuccess());
         if (result.isSuccess()) {
             // Signed in successfully, show authenticated UI.
             GoogleSignInAccount acct = result.getSignInAccount();

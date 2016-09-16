@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 import com.descarteaqui.descarteaqui.R;
 
-public class PetiFragment extends Fragment {
+public class PetitionsFragment extends Fragment {
 
     private TextView sendPetition;
     private TextView ratePetitions;
@@ -21,7 +21,7 @@ public class PetiFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View rootView = inflater.inflate(R.layout.fragment_peti, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_petitions, container, false);
 
         sendPetition = (TextView) rootView.findViewById(R.id.send_petition);
         ratePetitions = (TextView) rootView.findViewById(R.id.rate_petition);
