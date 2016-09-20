@@ -23,21 +23,33 @@ public abstract class PetitionController {
     }
 
     public static List<Petition> getAllPetitions(Context ctx, String creatorEmail){
-        List<Petition> petitions;
+        List<Petition> petitions = new ArrayList<>();
 
         PetitionsDB = new PetitionsDB(ctx);
 
-        petitions = PetitionsDB.getAllPetitions(creatorEmail);
+        List<Petition> allPetitions = PetitionsDB.getPetitions();
+
+        for (Petition petition : allPetitions) {
+            if (!petition.getCreator().equals(creatorEmail)){
+                petitions.add(petition);
+            }
+        }
 
         return petitions;
     }
 
     public static List<Petition> getMyPetitions(Context ctx, String creatorEmail){
-        List<Petition> petitions;
+        List<Petition> petitions = new ArrayList<>();
 
         PetitionsDB = new PetitionsDB(ctx);
 
-        petitions = PetitionsDB.getMyPetitions(creatorEmail);
+        List<Petition> allPetitions = PetitionsDB.getPetitions();
+
+        for (Petition petition : allPetitions) {
+            if (petition.getCreator().equals(creatorEmail)){
+                petitions.add(petition);
+            }
+        }
 
         return petitions;
     }

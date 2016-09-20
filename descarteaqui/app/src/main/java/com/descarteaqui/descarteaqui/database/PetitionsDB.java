@@ -27,7 +27,7 @@ public class PetitionsDB {
         valores.put("created_at", petition.getCreationDate());
         valores.put("district", petition.getDistrictName());
         valores.put("justification", petition.getJustification());
-        valores.put("creator", petition.getJustification());
+        valores.put("creator", petition.getCreator());
         valores.put("ok_rates", petition.getRatesOK());
         valores.put("ng_rates", petition.getRatesNG());
 
@@ -35,7 +35,7 @@ public class PetitionsDB {
 
     }
 
-    public List<Petition> getMyPetitions(String creatorEmail){
+    public List<Petition> getPetitions(){
         List<Petition> list = new ArrayList<>();
         String[] colunas = new String[]{"_id", "street", "created_at", "district", "justification", "creator", "ok_rates", "ng_rates"};
 
@@ -46,57 +46,21 @@ public class PetitionsDB {
 
             do {
 
-                 if (cursor.getString(5).equals(creatorEmail)) {
-                     int id = cursor.getInt(0);
-                     String street = cursor.getString(1);
-                     String created_at = cursor.getString(2);
-                     String district = cursor.getString(3);
-                     String justification = cursor.getString(4);
-                     int ok_rates = cursor.getInt(6);
-                     int ng_rates = cursor.getInt(7);
+                 int id = cursor.getInt(0);
+                 String street = cursor.getString(1);
+                 String created_at = cursor.getString(2);
+                 String district = cursor.getString(3);
+                 String justification = cursor.getString(4);
+                 String email = cursor.getString(5);
+                 int ok_rates = cursor.getInt(6);
+                 int ng_rates = cursor.getInt(7);
 
-                     Petition petition = new Petition(id, street, district, justification, creatorEmail);
-                     petition.setCreationDate(created_at);
-                     petition.setRatesNG(ng_rates);
-                     petition.setRatesOK(ok_rates);
+                 Petition petition = new Petition(id, street, district, justification, email);
+                 petition.setCreationDate(created_at);
+                 petition.setRatesNG(ng_rates);
+                 petition.setRatesOK(ok_rates);
 
-                     list.add(petition);
-                 }
-
-            } while(cursor.moveToNext());
-        }
-
-        return list;
-    }
-
-
-    public List<Petition> getAllPetitions(String creatorEmail){
-        List<Petition> list = new ArrayList<>();
-        String[] colunas = new String[]{"_id", "street", "created_at", "district", "justification", "creator", "ok_rates", "ng_rates"};
-
-        Cursor cursor = db.query(Database.TABLE_PETITIONS, colunas, null, null, null, null, "street ASC");
-
-        if (cursor.getCount() > 0){
-            cursor.moveToFirst();
-
-            do {
-
-                if (!cursor.getString(5).equals(creatorEmail)) {
-                    int id = cursor.getInt(0);
-                    String street = cursor.getString(1);
-                    String created_at = cursor.getString(2);
-                    String district = cursor.getString(3);
-                    String justification = cursor.getString(4);
-                    int ok_rates = cursor.getInt(6);
-                    int ng_rates = cursor.getInt(7);
-
-                    Petition petition = new Petition(id, street, district, justification, creatorEmail);
-                    petition.setCreationDate(created_at);
-                    petition.setRatesNG(ng_rates);
-                    petition.setRatesOK(ok_rates);
-
-                    list.add(petition);
-                }
+                 list.add(petition);
 
             } while(cursor.moveToNext());
         }

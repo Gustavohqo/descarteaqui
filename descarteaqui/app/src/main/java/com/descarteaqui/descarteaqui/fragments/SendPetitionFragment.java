@@ -1,8 +1,11 @@
 package com.descarteaqui.descarteaqui.fragments;
 
 import android.app.Fragment;
+import android.app.FragmentManager;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -53,6 +56,14 @@ public class SendPetitionFragment extends Fragment {
                     PetitionController.createPetition(getActivity(), petition);
 
                     Toast.makeText(getActivity(), "Petição enviada com sucesso! :)", Toast.LENGTH_SHORT).show();
+
+                    //Load the Petitions Fragment
+                    FragmentManager fm = getFragmentManager();
+                    Fragment fragment = new PetitionsFragment();
+                    fm.beginTransaction()
+                            .replace(R.id.fragment_container, fragment)
+                            .commit();
+
                 } else {
                     Toast.makeText(getActivity(), "Todos os campos devem estar preenchidos.", Toast.LENGTH_SHORT).show();
                 }
