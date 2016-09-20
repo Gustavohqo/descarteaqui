@@ -15,6 +15,7 @@ public class Database extends SQLiteOpenHelper {
     // Table Names
     public static final String TABLE_MARKERS = "markers";
     public static final String TABLE_PETITIONS = "petitions";
+    public static final String TABLE_RATES = "rates";
 
     // Table Creating
     public static final String CREATE_TABLE_MARKERS = "create table "+ TABLE_MARKERS +"("
@@ -37,6 +38,12 @@ public class Database extends SQLiteOpenHelper {
             + "ng_rates" + " integer"
             +");";
 
+    public static final String CREATE_TABLE_RATES = "create table "+ TABLE_RATES +"("
+            + "_id" + " integer primary key autoincrement, "
+            + "rated_by" + " text, "
+            + "petition_id" + " integer"
+            +");";
+
     public Database(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
@@ -47,6 +54,7 @@ public class Database extends SQLiteOpenHelper {
         // creating required tables
         db.execSQL(CREATE_TABLE_MARKERS);
         db.execSQL(CREATE_TABLE_PETITIONS);
+        db.execSQL(CREATE_TABLE_RATES);
     }
 
     @Override
@@ -54,6 +62,7 @@ public class Database extends SQLiteOpenHelper {
         // on upgrade drop older tables
         db.execSQL("drop table if exists " + TABLE_PETITIONS);
         db.execSQL("drop table if exists " + TABLE_MARKERS);
+        db.execSQL("drop table if exists " + TABLE_RATES);
 
         // create new tables
         onCreate(db);

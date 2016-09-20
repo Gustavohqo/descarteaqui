@@ -2,10 +2,15 @@ package com.descarteaqui.descarteaqui.fragments;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
-import android.graphics.Color;
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
+import android.os.Handler;
+import android.support.design.widget.TextInputLayout;
+import android.support.v7.app.AlertDialog;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,8 +22,11 @@ import android.widget.Toast;
 
 import com.descarteaqui.descarteaqui.R;
 import com.descarteaqui.descarteaqui.controllers.PetitionController;
+import com.descarteaqui.descarteaqui.controllers.UserController;
 import com.descarteaqui.descarteaqui.model.Petition;
 import com.github.clans.fab.FloatingActionButton;
+
+import java.util.List;
 
 /**
  * Created by Gabriel on 07/09/2016.
@@ -31,6 +39,10 @@ public class SendPetitionFragment extends Fragment {
     private EditText streetField;
     private EditText justificationField;
     private FloatingActionButton floatbuttonSend;
+    private TextInputLayout streetInputLayout;
+    private TextInputLayout districtInputLayout;
+    private TextInputLayout justificationInputLayout;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -44,30 +56,52 @@ public class SendPetitionFragment extends Fragment {
         floatbuttonSend = (FloatingActionButton) rootView.findViewById(R.id.send_button);
         citySpinner = (Spinner) rootView.findViewById(R.id.city_spinner);
         senderEmail = (TextView) rootView.findViewById(R.id.sender_email);
+        senderEmail.setText(senderEmail.getText() + UserController.getCurrentUser(getActivity()));
         senderEmail.setSelected(true);
+
+        justificationInputLayout = (TextInputLayout) rootView.findViewById(R.id.justification_field_input);
+        districtInputLayout = (TextInputLayout) rootView.findViewById(R.id.district_field_input);
+        streetInputLayout = (TextInputLayout) rootView.findViewById(R.id.street_field_input);
+
+        TextWatcher textWatcher = new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (streetField.getText().length() != 0) {
+                    streetInputLayout.setError("");
+                } if (districtField.getText().length() != 0){
+                    districtInputLayout.setError("");
+                } if (justificationField.getText().length() != 0) {
+                    justificationInputLayout.setError("");
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        };
+
+        justificationField.addTextChangedListener(textWatcher);
+        districtField.addTextChangedListener(textWatcher);
+        streetField.addTextChangedListener(textWatcher);
 
         floatbuttonSend.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                if (validateFields()){
+                if (validateFields() && userCanCreate()){
                     Petition petition = new Petition(PetitionController.getLastID(getActivity()), streetField.getText().toString(),
-                            districtField.getText().toString(),justificationField.getText().toString(), "asd");
+                            districtField.getText().toString(),justificationField.getText().toString(), UserController.getCurrentUser(getActivity()));
 
                     PetitionController.createPetition(getActivity(), petition);
 
-                    Toast.makeText(getActivity(), "Petição enviada com sucesso! :)", Toast.LENGTH_SHORT).show();
+                    showProgressDialog();
 
-                    //Load the Petitions Fragment
-                    FragmentManager fm = getFragmentManager();
-                    Fragment fragment = new PetitionsFragment();
-                    fm.beginTransaction()
-                            .replace(R.id.fragment_container, fragment)
-                            .commit();
-
-                } else {
-                    Toast.makeText(getActivity(), "Todos os campos devem estar preenchidos.", Toast.LENGTH_SHORT).show();
                 }
-
             }
         });
 
@@ -87,14 +121,128 @@ public class SendPetitionFragment extends Fragment {
         return rootView;
     }
 
-    private boolean validateFields(){
-        if (streetField.getText().toString().isEmpty() ||
-                districtField.getText().toString().isEmpty() ||
-                    justificationField.getText().toString().isEmpty()){
+    private boolean userCanCreate(){
+        List<Petition> myPetitions = PetitionController.getMyPetitions(getActivity(), UserController.getCurrentUser(getActivity()));
+
+
+        int districtCreateLimit = 0;
+
+        for (int i = 0; i < myPetitions.size(); i++) {
+            if (myPetitions.get(i).getDistrictName().toUpperCase().equals(districtField.getText().toString().toUpperCase())){
+                districtCreateLimit++;
+            }
+        }
+
+        if (districtCreateLimit > 0){
+            final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
+            alertDialogBuilder.setTitle("Não foi possível enviar a Petição.");
+            alertDialogBuilder.setMessage("Você já estrapolou o limite de petições por bairro.");
+
+            alertDialogBuilder.setPositiveButton("Fechar", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface arg0, int arg1) {
+                    arg0.dismiss();
+                }
+            });
+
+            AlertDialog alertDialog = alertDialogBuilder.create();
+            alertDialog.show();
+
+            FragmentManager fm = getFragmentManager();
+            Fragment fragment = new PetitionsFragment();
+            fm.beginTransaction()
+                    .replace(R.id.fragment_container, fragment)
+                    .commit();
+
             return false;
         } else {
             return true;
         }
+    }
+
+    private boolean validateFields(){
+        boolean fields_ok = true;
+
+        if (streetField.getText().toString().isEmpty()){
+            showError(streetInputLayout);
+            fields_ok = false;
+        } if (districtField.getText().toString().isEmpty()) {
+            showError(districtInputLayout);
+            fields_ok = false;
+        } if (justificationField.getText().toString().isEmpty()){
+            showError(justificationInputLayout);
+            fields_ok = false;
+        }
+
+        if (fields_ok){
+            hideError(streetInputLayout);
+            hideError(districtInputLayout);
+            hideError(justificationInputLayout);
+        }
+
+        return fields_ok;
+    }
+
+    private void showError(TextInputLayout inputLayout) {
+        inputLayout.setError("Este campo é obrigatório");
+    }
+
+    private void hideError(TextInputLayout inputLayout) {
+        inputLayout.setError("");
+    }
+
+    private void showProgressDialog(){
+        final int TIME = 1*1500;
+        final ProgressDialog dialog = new ProgressDialog(getActivity());
+        dialog.setMessage("Enviando a Petição.");
+        dialog.setCancelable(false);
+        dialog.show();
+        new Handler().postDelayed(new Runnable() {
+            public void run() {
+                dialog.dismiss();
+
+                final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
+                alertDialogBuilder.setTitle("Petição enviada com sucesso!");
+                alertDialogBuilder.setMessage("Você quer ajuda dos seus amigos? Compartilhe com eles! :)");
+
+                alertDialogBuilder.setPositiveButton("Sim", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface arg0, int arg1) {
+
+                        FragmentManager fm = getFragmentManager();
+                        Fragment fragment = new PetitionsFragment();
+                        fm.beginTransaction()
+                                .replace(R.id.fragment_container, fragment)
+                                .commit();
+
+                        shareSocialMedia(getView());
+                    }
+                });
+
+                alertDialogBuilder.setNegativeButton("Não", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface arg0, int arg1) {
+
+                        FragmentManager fm = getFragmentManager();
+                        Fragment fragment = new PetitionsFragment();
+                        fm.beginTransaction()
+                                .replace(R.id.fragment_container, fragment)
+                                .commit();
+                    }
+                });
+
+                AlertDialog alertDialog = alertDialogBuilder.create();
+                alertDialog.show();
+            }
+        }, TIME);
+    }
+
+    public void shareSocialMedia(View view){
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setType("text/plain");
+        intent.putExtra(Intent.EXTRA_TEXT, "Baixe o DescarteAqui e venha me ajudar votando na minha petição para inserir um ponto de coleta/descarte aqui no " + districtField.getText()
+                + ", na " + streetField.getText()+ ".");
+        startActivity(Intent.createChooser(intent, "Compartilhar com"));
     }
 
 }

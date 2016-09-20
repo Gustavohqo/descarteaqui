@@ -42,7 +42,12 @@ public class PetitionsFragment extends Fragment {
         infoPetition.setOnClickListener(new View.OnClickListener(){
             public void onClick(View vi) {
                 final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
-                alertDialogBuilder.setMessage("");
+                alertDialogBuilder.setMessage("Para cada usuário só é possível:" +
+                        "\n" +
+                        "\n  • Enviar uma Petição por bairro" +
+                        "\n" +
+                        "\n  • Votar em duas Petições por bairro" +
+                        "\n");
 
                 alertDialogBuilder.setPositiveButton("Fechar", new DialogInterface.OnClickListener() {
                     @Override

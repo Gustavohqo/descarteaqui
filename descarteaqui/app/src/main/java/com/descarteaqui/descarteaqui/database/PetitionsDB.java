@@ -35,6 +35,53 @@ public class PetitionsDB {
 
     }
 
+    public void updatePetition(Petition petition) {
+        ContentValues valores = new ContentValues();
+
+        valores.put("ok_rates", petition.getRatesOK());
+        valores.put("ng_rates", petition.getRatesNG());
+
+
+        db.update(Database.TABLE_PETITIONS, valores, "_id = ?", new String[]{""+petition.getID()});
+
+        db.close();
+
+    }
+
+    public Petition getPetitionById(int id){
+        Petition returnPetition = null;
+        String[] colunas = new String[]{"_id", "street", "created_at", "district", "justification", "creator", "ok_rates", "ng_rates"};
+
+        Cursor cursor = db.query(Database.TABLE_PETITIONS, colunas, null, null, null, null, "street ASC");
+
+        if (cursor.getCount() > 0){
+            cursor.moveToFirst();
+
+            do {
+
+                if (id == cursor.getInt(0)) {
+                    String street = cursor.getString(1);
+                    String created_at = cursor.getString(2);
+                    String district = cursor.getString(3);
+                    String justification = cursor.getString(4);
+                    String email = cursor.getString(5);
+                    int ok_rates = cursor.getInt(6);
+                    int ng_rates = cursor.getInt(7);
+
+                    Petition petition = new Petition(id, street, district, justification, email);
+                    petition.setCreationDate(created_at);
+                    petition.setRatesNG(ng_rates);
+                    petition.setRatesOK(ok_rates);
+
+                    returnPetition = petition;
+                }
+
+            } while(cursor.moveToNext());
+        }
+
+        return returnPetition;
+    }
+
     public List<Petition> getPetitions(){
         List<Petition> list = new ArrayList<>();
         String[] colunas = new String[]{"_id", "street", "created_at", "district", "justification", "creator", "ok_rates", "ng_rates"};

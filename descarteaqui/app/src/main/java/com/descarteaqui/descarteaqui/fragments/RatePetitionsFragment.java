@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.descarteaqui.descarteaqui.R;
 import com.descarteaqui.descarteaqui.adapter.PetitionAdapter;
 import com.descarteaqui.descarteaqui.controllers.PetitionController;
+import com.descarteaqui.descarteaqui.controllers.UserController;
 import com.descarteaqui.descarteaqui.model.Petition;
 
 import java.util.ArrayList;
@@ -120,7 +121,7 @@ public class RatePetitionsFragment extends Fragment {
 
     private List<Petition> myPetitionsList(){
         activeList.clear();
-        List<Petition> lista = PetitionController.getMyPetitions(getActivity(), "asd");
+        List<Petition> lista = PetitionController.getMyPetitions(getActivity(), UserController.getCurrentUser(getActivity()));
         activeList.addAll(lista);
 
         return activeList;
@@ -128,7 +129,7 @@ public class RatePetitionsFragment extends Fragment {
 
     private List<Petition> allPetitionsList(){
         activeList.clear();
-        List<Petition> lista = PetitionController.getAllPetitions(getActivity(), "asd");
+        List<Petition> lista = PetitionController.getAllPetitions(getActivity(), UserController.getCurrentUser(getActivity()));
         activeList.addAll(lista);
 
         return activeList;

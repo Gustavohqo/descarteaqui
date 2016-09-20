@@ -58,7 +58,6 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
             if (map != null) {
                 createMarkers();
             }
-
             GPSError.setVisibility(View.INVISIBLE);
         }
 

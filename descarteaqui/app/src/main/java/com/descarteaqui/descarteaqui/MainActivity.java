@@ -20,6 +20,7 @@ import android.widget.TextView;
 
 import com.descarteaqui.descarteaqui.activities.AccountsActivity;
 import com.descarteaqui.descarteaqui.controllers.App;
+import com.descarteaqui.descarteaqui.controllers.UserController;
 import com.descarteaqui.descarteaqui.fragments.MapsFragment;
 import com.descarteaqui.descarteaqui.fragments.PetitionsFragment;
 import com.descarteaqui.descarteaqui.fragments.TipFragment;
@@ -146,7 +147,7 @@ public class MainActivity extends AppCompatActivity
                 fragment = new TipFragment();
                 break;
             case R.id.nav_petitions:
-                if (!isUserLogged()) {
+                if (!UserController.isUserLogged()) {
                     final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
                     alertDialogBuilder.setMessage("É preciso estar logado para ter acesso ao menu de Petições.\n\nVocê deseja efetuar o login?");
 
@@ -191,8 +192,4 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-    private boolean isUserLogged(){
-
-        return true;
-    }
 }

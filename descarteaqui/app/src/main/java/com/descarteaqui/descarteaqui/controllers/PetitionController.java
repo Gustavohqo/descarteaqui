@@ -22,6 +22,13 @@ public abstract class PetitionController {
 
     }
 
+    public static void updatePetition(Context ctx, Petition petition){
+        PetitionsDB = new PetitionsDB(ctx);
+
+        PetitionsDB.updatePetition(petition);
+
+    }
+
     public static List<Petition> getAllPetitions(Context ctx, String creatorEmail){
         List<Petition> petitions = new ArrayList<>();
 
