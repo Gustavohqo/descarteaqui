@@ -97,12 +97,13 @@ public class MainActivity extends AppCompatActivity
                                     JSONObject object,
                                     GraphResponse response) {
                                 System.out.println("aqui");
-//                                try {
-//                                    System.out.println(object.getString("email"));
-//                                }catch(Exception e){
-//                                    System.out.println("sss");
-//                                }
-                                refreshFacebookInformation();
+                                String email;
+                                try {
+                                    email = object.getString("email");
+                                }catch(Exception e){
+                                    email = "";
+                                }
+                                refreshFacebookInformation(email);
                                 System.out.println(object);
                                 // Application code
                             }
@@ -159,7 +160,7 @@ public class MainActivity extends AppCompatActivity
     }
 
 
-    private void refreshFacebookInformation(){
+    private void refreshFacebookInformation(String emailUser){
         View header=navigationView.getHeaderView(0);
         // Bitmap bmp = BitmapFactory.decodeStream(userInfo.getPhotoUrl());
         photo = (ImageView)header.findViewById(R.id.imageView);
@@ -167,8 +168,8 @@ public class MainActivity extends AppCompatActivity
         name = (TextView)header.findViewById(R.id.nameView);
 
         if(Profile.getCurrentProfile() != null) {
-            name.setText("Bem vindo, " + Profile.getCurrentProfile().getFirstName());
-             email.setText(" ");
+            name.setText("Bem vindo, " + Profile.getCurrentProfile().getName());
+             email.setText(emailUser);
              photo.setImageURI(Profile.getCurrentProfile().getProfilePictureUri(120, 120));
 
             Picasso.with(this).load(Profile.getCurrentProfile().getProfilePictureUri(120, 120))

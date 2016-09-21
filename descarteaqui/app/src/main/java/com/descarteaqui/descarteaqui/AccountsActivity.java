@@ -64,8 +64,8 @@ public class AccountsActivity extends AppCompatActivity  implements
 
         loginButton = (LoginButton)findViewById(R.id.login_button);
 
-//        loginButton.setReadPermissions(Arrays.asList(
-//                "public_profile", "email"));
+        loginButton.setReadPermissions(Arrays.asList(
+                "public_profile", "email"));
 
         // facebook login
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
