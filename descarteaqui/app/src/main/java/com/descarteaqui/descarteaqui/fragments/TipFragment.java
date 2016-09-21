@@ -1,6 +1,7 @@
 package com.descarteaqui.descarteaqui.fragments;
 
 
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.view.LayoutInflater;
@@ -38,9 +39,7 @@ public class TipFragment extends Fragment {
         String coletaSeletiva = "Consiste na separação e recolhimento dos resíduos descartados de modo que atua diretamente na redução do lixo jogado na natureza. \n" +
                 "O materiais que compõem a coleta seletiva são: papéis, metais, plásticos e vidros." ;
 
-        String papel = "Papel : possui grande potencial de reciclagem. Porém, só alguns tipos podem ser reciclados, tais como: " +
-                "jornais e revistas, fotocópias e de fax, folhas de caderno, envelopes, provas, caixas em geral, rascunhos, " +
-                "aparas de papel e cartazes velhos. Ademais, uma dica importante: imprima sempre frente e verso,  pois isso reduz em 50% o consumo de folhas.";
+        String papel = "Papel : imprima sempre frente e verso,  pois isso reduz em 50% o consumo de folhas.";
 
         String plastico = "Plástico : tem como um dos principais representantes o PET que, quando reciclado, pode resultar em fibras de poliéster para produção de tecidos, " +
                 "ou até embalagens para outros produtos que não sejam da indústria alimentícia. Além do mais, outro tipo de plástico muito utilizado são " +
@@ -51,11 +50,51 @@ public class TipFragment extends Fragment {
                 "de vidro retornáveis, pois isso reduz a necessidade de extração da matéria-prima e da fabricação. Além disso, no caso do descarte do vidro " +
                 "quebrado, é interessante cortar uma garrafa e colocar os cacos dentro dela e lacrá-la, ou colocar em uma caixa de papelão e também lacrar.";
 
+        String oleo ="No caso do óleo de cozinha, o mais adequado é colocá-lo em uma garrafa PET e enviar para a reciclagem. " +
+                "Outra possibilidade seria fabricar sabão caseiro com ele. Além disso, para tratamentos em geral, utiliza-se a" +
+                " técnica do rerrefino." +
+                "Agora, uma curiosidade: um litro de óleo é capaz de acabar com o oxigênio de 1 milhão de litros de água.";
+
+        String organicos ="Em geral, são provenientes de organismos animais ou vegetais. Nesse caso, uma abordagem de " +
+                "reciclagem é a prática da compostagem, que possibilita transformar esses resíduos em adubo para o solo, " +
+                "vasos de plantas etc. Porém, só alguns materiais podem ser usados na compostagem, como por exemplo: resto " +
+                "de pães ou biscoitos, restos de grãos ou farinhas crus, esterco de animais herbívoros, grama e folhas secas," +
+                " entre outros." +"Porém, não pode ser usados na compostagem materiais como leite, óleo, remédios, fezes " +
+                "humanas e de animais doméstico." + "Além da compostagem, outro método de reciclagem é o aterramento, sendo " +
+                "este mais indicado para locais em que não há recolhimento do lixo.";
+
+        String hospitalar ="Seringas, bolsas de sangue etc não devem ser jogados no lixo comum, pelo fato de poderem causar alguma contaminação, principalmente aos catadores de lixo. \n" +
+                "Nesse contexto, algumas alternativas são:" +
+                "Incineração: não é tão adequada pelo fato de haver emissão de poluentes e as cinzas ainda preservarem a toxidade dos materiais incinerados;" +
+                "Esterilização: é uma das alternativas mais válidas. Porém, pelo fato de ser muito cara, é pouco utilizada;" +
+                "Deposição em valas assépticas: igualmente válida, porém é necessário espaço e fiscalização, o que limita o uso dessa técnica.";
+
+        String quimico="No caso de remédios vencidos, impróprios para o consumo ou que não serão mais utilizados, é adequado levá-los para pontos de coleta de medicamentos, sendo estes," +
+                "principalmente, em farmácias ou supermercados.";
+
+        String eletronicos = "Computadores, impressoras, teclados, televisões, celulares e demais eletroeletrônicos devem ser" +
+                " depositados em empresas especializadas, pois elas farão o processo de manufatura reversa(extração dos " +
+                "materiais usados na fabricação do dispositivo), de modo a reaproveitar os materiais.";
+
+        String pilhas = "Pilhas: não devem ser jogadas no lixo comum com outros materiais, pois possuem metais pesados que são" +
+                " nocivos às pessoas e ao meio-ambiente." +
+                " Nesse caso, é adequado enviá-las a uma empresa especializada.";
+
+        String baterias = "Baterias: são feitas extrações dos componentes que a compõe de modo que possam ser utilizados " +
+                "novamente no processo produtivo.";
+
+        String descontoEnergisa = "No contexto de Campina Grande, a Energisa fornece descontos na conta de energia para quem " +
+                "levar lixo eletrônico em uma unidade recebedora. Para mais informações, acesse o seguinte " +
+                "site : http://g1.globo.com/pb/paraiba/noticia/2015/03/populacao-pode-trocar-lixo-eletronico-por-desconto-em-conta-de-luz-na-pb.html";
+
+
         children = new String [][] {
                 { coletaSeletiva, papel, vidro, plastico, metais},
-                { "Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of comes from a line in section 1.10.32." },
-                { "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like)." },
-                { "There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of text. All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words, combined with a handful of model sentence structures, to generate Lorem Ipsum which looks reasonable. The generated Lorem Ipsum is therefore always free from repetition, injected humour, or non-characteristic words etc." }
+                {organicos},
+                { eletronicos, pilhas, baterias, descontoEnergisa},
+                {oleo},
+                {quimico},
+                {hospitalar}
         };
     }
 
@@ -72,7 +111,7 @@ public class TipFragment extends Fragment {
 
         lv = (ExpandableListView) view.findViewById(R.id.expListView);
         lv.setAdapter(new ExpandableListAdapter(groups, children));
-        //lv.setGroupIndicator(null);
+        lv.setGroupIndicator(null);
 
 
     }
@@ -147,6 +186,8 @@ public class TipFragment extends Fragment {
         public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
             ViewHolder holder;
 
+            String headerTitle = (String) getGroup(groupPosition);
+
             if (convertView == null) {
                 convertView = inf.inflate(R.layout.fragment_tip, parent, false);
 
@@ -157,7 +198,24 @@ public class TipFragment extends Fragment {
                 holder = (ViewHolder) convertView.getTag();
             }
 
+            TextView header_text = (TextView) convertView.findViewById(R.id.lblListHeader);
+            header_text.setText(headerTitle);
             holder.text.setText(getGroup(groupPosition).toString());
+
+            if (isExpanded) {
+                header_text.setTypeface(null, Typeface.BOLD);
+                header_text.setCompoundDrawablesWithIntrinsicBounds(0, 0,
+                        R.drawable.ic_expand_less_black_24dp, 0);
+            } else {
+                // If group is not expanded then change the text back into normal
+                // and change the icon
+
+                header_text.setTypeface(null, Typeface.NORMAL);
+                header_text.setCompoundDrawablesWithIntrinsicBounds(0, 0,
+                        R.drawable.ic_expand_more_black_24dp, 0);
+            }
+
+
             return convertView;
         }
 
