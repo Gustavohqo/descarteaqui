@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.NavigationView;
 import android.app.Fragment;
 import android.support.v4.view.GravityCompat;
@@ -24,7 +25,10 @@ import com.descarteaqui.descarteaqui.fragments.MapsFragment;
 import com.descarteaqui.descarteaqui.fragments.PetiFragment;
 import com.descarteaqui.descarteaqui.fragments.TipFragment;
 import com.facebook.AccessToken;
+import com.facebook.CallbackManager;
 import com.facebook.FacebookSdk;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
 import com.facebook.Profile;
 import com.facebook.login.LoginResult;
 import com.google.android.gms.auth.api.Auth;
@@ -36,6 +40,8 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.OptionalPendingResult;
 import com.squareup.picasso.Picasso;
+
+import org.json.JSONObject;
 
 
 public class MainActivity extends AppCompatActivity
@@ -49,6 +55,7 @@ public class MainActivity extends AppCompatActivity
     private ImageView photo;
     private TextView name;
     private GoogleApiClient mGoogleApiClient;
+    private CallbackManager callbackManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,11 +79,37 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         FacebookSdk.sdkInitialize(getApplicationContext());
-        if (AccessToken.getCurrentAccessToken() != null) {
-            View header = navigationView.getHeaderView(0);
-            email = (TextView) header.findViewById(R.id.textView);
-            email.setText(AccessToken.getCurrentAccessToken().toString());
-        }
+        FacebookSdk.sdkInitialize(getApplicationContext());
+
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+
+                callbackManager = CallbackManager.Factory.create();
+                System.out.println("inicio");
+                GraphRequest request = GraphRequest.newMeRequest(
+                        AccessToken.getCurrentAccessToken(),
+                        new GraphRequest.GraphJSONObjectCallback() {
+                            @Override
+                            public void onCompleted(
+                                    JSONObject object,
+                                    GraphResponse response) {
+                                System.out.println("aqui");
+                                System.out.println(Profile.getCurrentProfile());
+                                refreshFacebookInformation();
+                                System.out.println(object);
+                                // Application code
+                            }
+                        });
+                Bundle parameters = new Bundle();
+                parameters.putString("fields", "id,email,link");
+                request.setParameters(parameters);
+                request.executeAsync();
+                System.out.println("fim");
+
+            }
+        }, 100);
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
@@ -128,11 +161,12 @@ public class MainActivity extends AppCompatActivity
         email = (TextView)header.findViewById(R.id.textView);
         name = (TextView)header.findViewById(R.id.nameView);
 
-        name.setText("Bem vindo, " + facebookProfile.getFirstName());
-        email.setText(" ");
-        photo.setImageURI(facebookProfile.getProfilePictureUri(120,120));
 
-        Picasso.with(this).load(facebookProfile.getProfilePictureUri(120,120))
+        name.setText("Bem vindo, " + Profile.getCurrentProfile().getFirstName());
+        email.setText(" ");
+        photo.setImageURI(Profile.getCurrentProfile().getProfilePictureUri(120,120));
+
+        Picasso.with(this).load(Profile.getCurrentProfile().getProfilePictureUri(120,120))
                 .resize(120, 120)
                 .into(photo);
     }
