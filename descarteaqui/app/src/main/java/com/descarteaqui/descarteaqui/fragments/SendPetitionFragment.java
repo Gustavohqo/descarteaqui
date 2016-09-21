@@ -5,6 +5,10 @@ import android.app.FragmentManager;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffColorFilter;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.TextInputLayout;
@@ -48,7 +52,7 @@ public class SendPetitionFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View rootView = inflater.inflate(R.layout.fragment_send, container, false);
+        final View rootView = inflater.inflate(R.layout.fragment_send, container, false);
 
         districtField = (EditText) rootView.findViewById(R.id.district_field);
         streetField = (EditText) rootView.findViewById(R.id.street_field);
@@ -58,37 +62,6 @@ public class SendPetitionFragment extends Fragment {
         senderEmail = (TextView) rootView.findViewById(R.id.sender_email);
         senderEmail.setText(senderEmail.getText() + UserController.getCurrentUser(getActivity()));
         senderEmail.setSelected(true);
-
-        justificationInputLayout = (TextInputLayout) rootView.findViewById(R.id.justification_field_input);
-        districtInputLayout = (TextInputLayout) rootView.findViewById(R.id.district_field_input);
-        streetInputLayout = (TextInputLayout) rootView.findViewById(R.id.street_field_input);
-
-        TextWatcher textWatcher = new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (streetField.getText().length() != 0) {
-                    streetInputLayout.setError("");
-                } if (districtField.getText().length() != 0){
-                    districtInputLayout.setError("");
-                } if (justificationField.getText().length() != 0) {
-                    justificationInputLayout.setError("");
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        };
-
-        justificationField.addTextChangedListener(textWatcher);
-        districtField.addTextChangedListener(textWatcher);
-        streetField.addTextChangedListener(textWatcher);
 
         floatbuttonSend.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -164,31 +137,17 @@ public class SendPetitionFragment extends Fragment {
         boolean fields_ok = true;
 
         if (streetField.getText().toString().isEmpty()){
-            showError(streetInputLayout);
+            streetField.setError("Este campo não pode ficar vazio");;
             fields_ok = false;
         } if (districtField.getText().toString().isEmpty()) {
-            showError(districtInputLayout);
+            districtField.setError("Este campo não pode ficar vazio");;
             fields_ok = false;
         } if (justificationField.getText().toString().isEmpty()){
-            showError(justificationInputLayout);
+            justificationField.setError("Este campo não pode ficar vazio");;
             fields_ok = false;
-        }
-
-        if (fields_ok){
-            hideError(streetInputLayout);
-            hideError(districtInputLayout);
-            hideError(justificationInputLayout);
         }
 
         return fields_ok;
-    }
-
-    private void showError(TextInputLayout inputLayout) {
-        inputLayout.setError("Este campo é obrigatório");
-    }
-
-    private void hideError(TextInputLayout inputLayout) {
-        inputLayout.setError("");
     }
 
     private void showProgressDialog(){

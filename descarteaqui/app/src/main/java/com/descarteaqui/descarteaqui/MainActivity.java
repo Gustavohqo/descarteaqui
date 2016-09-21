@@ -68,6 +68,7 @@ public class MainActivity extends AppCompatActivity
             facebookProfile = App.getInstance().getFacebookProfile();
             refreshFacebookInformation();
         }
+
     }
 
     private void refreshFacebookInformation(){
@@ -124,8 +125,9 @@ public class MainActivity extends AppCompatActivity
 
         int id = item.getItemId();
 
-        if (id == R.id.action_settings) {
-            return true;
+        switch (id){
+            case R.id.my_rates:
+                break;
         }
 
         return super.onOptionsItemSelected(item);

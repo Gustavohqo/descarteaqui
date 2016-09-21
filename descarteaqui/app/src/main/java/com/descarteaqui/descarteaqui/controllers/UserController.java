@@ -17,7 +17,7 @@ public abstract class UserController {
 
     public static String getCurrentUser(Context ctx) {
 
-        return "LEREGOGOGO";
+        return "testexxx";
     }
 
     public static boolean isUserLogged(){
