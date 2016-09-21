@@ -17,7 +17,7 @@ public abstract class UserController {
 
     public static String getCurrentUser(Context ctx) {
 
-        return "gabrielgogo@outlook.com";
+        return "LEREGOGOGO";
     }
 
     public static boolean isUserLogged(){
@@ -30,7 +30,7 @@ public abstract class UserController {
         RatesDB.removeRatedPetition(ctx, rated_by, petition_id);
     }
 
-    public static void addRatedPetition(Context ctx, String rated_by, int petition_id, String currentUser){
+    public static void addRatedPetition(Context ctx, String rated_by, int petition_id, String currentUser, String rate){
         RatesDB = new RatesDB(ctx);
         
         List<Petition> myPetitions = RatesDB.getRatedPetitions(ctx, currentUser);
@@ -44,7 +44,7 @@ public abstract class UserController {
         }
 
         if (petitionIDCount == 0){
-            RatesDB.addRatedPetition(ctx, rated_by, petition_id);
+            RatesDB.addRatedPetition(ctx, rated_by, petition_id, rate);
         }
     }
 
@@ -56,6 +56,12 @@ public abstract class UserController {
         ratedPetitions = RatesDB.getRatedPetitions(ctx, currentUser);
 
         return ratedPetitions;
+    }
+
+    public static String getTypeRate(Context ctx, int petition_id, String currentUser){
+        RatesDB = new RatesDB(ctx);
+
+        return RatesDB.getTypeRate(petition_id, currentUser);
     }
 
 }

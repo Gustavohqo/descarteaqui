@@ -74,7 +74,9 @@ public class PetitionAdapter extends RecyclerView.Adapter<PetitionAdapter.MyView
                         } else {
                             mList.get(position).rateNG();
                             holder.rateNGButton.animate().scaleX(alreadyClickNG).scaleY(alreadyClickNG).setDuration(200).start();
-                            UserController.addRatedPetition(ctx, UserController.getCurrentUser(ctx), mList.get(position).getID(), UserController.getCurrentUser(ctx));
+                            UserController.addRatedPetition(ctx, UserController.getCurrentUser(ctx), mList.get(position).getID(), UserController.getCurrentUser(ctx), "ng");
+                            Toast.makeText(ctx, "Você votou " + UserController.getTypeRate(ctx, mList.get(position).getID(), UserController.getCurrentUser(ctx)) + " nessa petição de " + mList.get(position).getDistrictName(), Toast.LENGTH_SHORT).show();
+
                             if (holder.rateOKButton.getScaleX() == alreadyClickOK) {
                                 holder.rateOKButton.animate().scaleX(notAlreadyClickOK).scaleY(notAlreadyClickOK).setDuration(200).start();
                                 holder.rateOK.setText("+ " + String.valueOf(mList.get(position).getRatesOK()));
@@ -103,7 +105,9 @@ public class PetitionAdapter extends RecyclerView.Adapter<PetitionAdapter.MyView
                         } else {
                             mList.get(position).rateOK();
                             holder.rateOKButton.animate().scaleX(alreadyClickOK).scaleY(alreadyClickOK).setDuration(200).start();
-                            UserController.addRatedPetition(ctx, UserController.getCurrentUser(ctx), mList.get(position).getID(), UserController.getCurrentUser(ctx));
+                            UserController.addRatedPetition(ctx, UserController.getCurrentUser(ctx), mList.get(position).getID(), UserController.getCurrentUser(ctx), "ok");
+                            Toast.makeText(ctx, "Você votou " + UserController.getTypeRate(ctx, mList.get(position).getID(), UserController.getCurrentUser(ctx)) + " nessa petição de " + mList.get(position).getDistrictName(), Toast.LENGTH_SHORT).show();
+
                             if (holder.rateNGButton.getScaleX() == alreadyClickNG) {
                                 holder.rateNGButton.animate().scaleX(notAlreadyClickNG).scaleY(notAlreadyClickNG).setDuration(200).start();
                                 holder.rateNG.setText("+ " + String.valueOf(mList.get(position).getRatesNG()));
@@ -171,7 +175,7 @@ public class PetitionAdapter extends RecyclerView.Adapter<PetitionAdapter.MyView
         }
 
         if (alreadyRated){
-            Toast.makeText(ctx, "Você já votou nessa aqui, fion. :(", Toast.LENGTH_SHORT).show();
+            Toast.makeText(ctx, "Você votou " + UserController.getTypeRate(ctx, petition.getID(), UserController.getCurrentUser(ctx)) + " nessa petição de " + petition.getDistrictName(), Toast.LENGTH_SHORT).show();
             return false;
         } else if (districtRateLimit >= 2){
             final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(ctx);

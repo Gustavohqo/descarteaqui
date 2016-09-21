@@ -41,7 +41,8 @@ public class Database extends SQLiteOpenHelper {
     public static final String CREATE_TABLE_RATES = "create table "+ TABLE_RATES +"("
             + "_id" + " integer primary key autoincrement, "
             + "rated_by" + " text, "
-            + "petition_id" + " integer"
+            + "petition_id" + " integer, "
+            + "type_rate" + " text"
             +");";
 
     public Database(Context context) {

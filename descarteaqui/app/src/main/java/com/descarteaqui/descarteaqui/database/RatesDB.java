@@ -24,11 +24,12 @@ public class RatesDB {
 
     }
 
-    public void addRatedPetition(Context ctx, String rated_by, int petition_id){
+    public void addRatedPetition(Context ctx, String rated_by, int petition_id, String rate){
         ContentValues valores = new ContentValues();
 
         valores.put("rated_by", rated_by);
         valores.put("petition_id", petition_id);
+        valores.put("type_rate", rate);
 
         db.insert(Database.TABLE_RATES, null, valores);
     }
@@ -44,7 +45,7 @@ public class RatesDB {
 
         List<Petition> ratedPetitions = new ArrayList<>();
 
-        String[] colunas = new String[]{"_id", "rated_by", "petition_id"};
+        String[] colunas = new String[]{"_id", "rated_by", "petition_id", "type_rate"};
 
         Cursor cursor = db.query(Database.TABLE_RATES, colunas, null, null, null, null, "rated_by ASC");
 
@@ -64,5 +65,28 @@ public class RatesDB {
         }
 
         return ratedPetitions;
+    }
+
+    public String getTypeRate(int petition_id, String currentUser){
+
+        String typeRate = "";
+
+        String[] colunas = new String[]{"_id", "rated_by", "petition_id", "type_rate"};
+
+        Cursor cursor = db.query(Database.TABLE_RATES, colunas, null, null, null, null, "rated_by ASC");
+
+        if (cursor.getCount() > 0){
+            cursor.moveToFirst();
+
+            do {
+
+                if (cursor.getInt(2) == petition_id && cursor.getString(1).equals(currentUser)){
+                    typeRate = cursor.getString(3);
+                }
+
+            } while(cursor.moveToNext());
+        }
+
+        return typeRate;
     }
 }
