@@ -91,7 +91,7 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/custom_form"
                 android:inputType="textPostalAddress"
-                android:drawableLeft="@drawable/ic_account_circle_black_24dp"
+                android:drawableLeft="@drawable/ic_local_offer_white_24dp"
                 android:drawableTint="#f9aa50"
                 android:drawablePadding="20dp"
                 android:paddingLeft="12dp"
@@ -110,7 +110,7 @@
 
             <EditText
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="100dp"
                 android:background="@drawable/custom_form"
                 android:inputType="textMultiLine"
                 android:drawableLeft="@drawable/ic_message_white_24dp"
@@ -118,8 +118,8 @@
                 android:drawablePadding="20dp"
                 android:paddingLeft="12dp"
                 android:paddingRight="16dp"
-                android:paddingTop="17dp"
-                android:paddingBottom="80dp"
+                android:paddingTop="12dp"
+                android:paddingBottom="12dp"
                 android:hint="Justificativa"
                 android:id="@+id/justification_field"
                 android:layout_centerHorizontal="true"
