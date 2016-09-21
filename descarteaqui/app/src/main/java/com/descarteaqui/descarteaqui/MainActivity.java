@@ -41,6 +41,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.OptionalPendingResult;
 import com.squareup.picasso.Picasso;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 
@@ -96,7 +97,11 @@ public class MainActivity extends AppCompatActivity
                                     JSONObject object,
                                     GraphResponse response) {
                                 System.out.println("aqui");
-                                System.out.println(Profile.getCurrentProfile());
+//                                try {
+//                                    System.out.println(object.getString("email"));
+//                                }catch(Exception e){
+//                                    System.out.println("sss");
+//                                }
                                 refreshFacebookInformation();
                                 System.out.println(object);
                                 // Application code
@@ -161,14 +166,15 @@ public class MainActivity extends AppCompatActivity
         email = (TextView)header.findViewById(R.id.textView);
         name = (TextView)header.findViewById(R.id.nameView);
 
+        if(Profile.getCurrentProfile() != null) {
+            name.setText("Bem vindo, " + Profile.getCurrentProfile().getFirstName());
+             email.setText(" ");
+             photo.setImageURI(Profile.getCurrentProfile().getProfilePictureUri(120, 120));
 
-        name.setText("Bem vindo, " + Profile.getCurrentProfile().getFirstName());
-        email.setText(" ");
-        photo.setImageURI(Profile.getCurrentProfile().getProfilePictureUri(120,120));
-
-        Picasso.with(this).load(Profile.getCurrentProfile().getProfilePictureUri(120,120))
+            Picasso.with(this).load(Profile.getCurrentProfile().getProfilePictureUri(120, 120))
                 .resize(120, 120)
                 .into(photo);
+        }
     }
 
     private void refreshScreenInformation()  {

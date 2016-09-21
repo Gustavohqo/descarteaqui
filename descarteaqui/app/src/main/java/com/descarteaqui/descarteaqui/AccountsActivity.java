@@ -34,6 +34,8 @@ import com.google.android.gms.common.api.OptionalPendingResult;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 
+import java.util.Arrays;
+
 public class AccountsActivity extends AppCompatActivity  implements
         GoogleApiClient.OnConnectionFailedListener,
         View.OnClickListener{
@@ -61,6 +63,9 @@ public class AccountsActivity extends AppCompatActivity  implements
         mStatusTextView = (TextView) findViewById(R.id.status);
 
         loginButton = (LoginButton)findViewById(R.id.login_button);
+
+//        loginButton.setReadPermissions(Arrays.asList(
+//                "public_profile", "email"));
 
         // facebook login
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
