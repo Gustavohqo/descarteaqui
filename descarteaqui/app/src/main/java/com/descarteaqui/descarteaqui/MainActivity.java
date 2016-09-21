@@ -26,14 +26,19 @@ import com.descarteaqui.descarteaqui.fragments.TipFragment;
 import com.facebook.AccessToken;
 import com.facebook.FacebookSdk;
 import com.facebook.Profile;
+import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInApi;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.OptionalPendingResult;
 import com.squareup.picasso.Picasso;
 
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements  GoogleApiClient.OnConnectionFailedListener, NavigationView.OnNavigationItemSelectedListener {
 
     NavigationView navigationView = null;
     Toolbar toolbar = null;
@@ -42,6 +47,8 @@ public class MainActivity extends AppCompatActivity
     private TextView email;
     private ImageView photo;
     private TextView name;
+    private GoogleApiClient mGoogleApiClient;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,14 +70,58 @@ public class MainActivity extends AppCompatActivity
 
         navigationView.setNavigationItemSelectedListener(this);
 
-        if(App.getInstance() != null && App.getInstance().getUserGoogleInfo() != null) {
-            userInfo = App.getInstance().getUserGoogleInfo();
-            refreshScreenInformation();
-        }else if(App.getInstance() != null && App.getInstance().getFacebookProfile() != null) {
-            facebookProfile = App.getInstance().getFacebookProfile();
-            refreshFacebookInformation();
+        FacebookSdk.sdkInitialize(getApplicationContext());
+        if (Profile.getCurrentProfile() != null) {
+            View header = navigationView.getHeaderView(0);
+            email = (TextView) header.findViewById(R.id.textView);
+            email.setText(Profile.getCurrentProfile().toString());
         }
+
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();
+
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .enableAutoManage(this /* FragmentActivity */, this /* OnConnectionFailedListener */)
+                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+                .build();
+
+        OptionalPendingResult<GoogleSignInResult> opr = Auth.GoogleSignInApi.silentSignIn(mGoogleApiClient);
+        if (opr.isDone()) {
+            // If the user's cached credentials are valid, the OptionalPendingResult will be "done"
+            // and the GoogleSignInResult will be available instantly.
+            //Log.d(TAG, "Got cached sign-in");
+            GoogleSignInResult result = opr.get();
+            View header = navigationView.getHeaderView(0);
+            photo = (ImageView)header.findViewById(R.id.imageView);
+            email = (TextView)header.findViewById(R.id.textView);
+            name = (TextView)header.findViewById(R.id.nameView);
+
+            email.setText(result.getSignInAccount().getEmail());
+            name.setText(result.getSignInAccount().getDisplayName());
+            photo.setImageURI(result.getSignInAccount().getPhotoUrl());
+
+            Picasso.with(this).load(result.getSignInAccount().getPhotoUrl())
+                    .resize(115, 115)
+                    .into(photo);
+        }
+
+            if (App.getInstance() != null && App.getInstance().getUserGoogleInfo() != null) {
+                userInfo = App.getInstance().getUserGoogleInfo();
+                //refreshScreenInformation();
+            } else if (App.getInstance() != null && App.getInstance().getFacebookProfile() != null) {
+                facebookProfile = App.getInstance().getFacebookProfile();
+                //refreshFacebookInformation();
+            }
     }
+
+    @Override
+    public void onConnectionFailed(ConnectionResult connectionResult) {
+        // An unresolvable error has occurred and Google APIs (including Sign-In) will not
+        // be available.
+        //Log.d(TAG, "onConnectionFailed:" + connectionResult);
+    }
+
 
     private void refreshFacebookInformation(){
         View header=navigationView.getHeaderView(0);
