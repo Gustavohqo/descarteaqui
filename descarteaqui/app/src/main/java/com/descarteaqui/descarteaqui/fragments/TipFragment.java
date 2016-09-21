@@ -26,6 +26,10 @@ public class TipFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        setItems();
+    }
+
+    private void setItems() {
         groups = new String[] { "Coleta Seletiva", "Lixos Orgânicos", "Eletrônicos", "Óleos",
                 "Lixo Químico","Lixo Hospitalar"};
 
