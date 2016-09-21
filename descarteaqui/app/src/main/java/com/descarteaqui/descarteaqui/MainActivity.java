@@ -26,6 +26,7 @@ import com.descarteaqui.descarteaqui.fragments.TipFragment;
 import com.facebook.AccessToken;
 import com.facebook.FacebookSdk;
 import com.facebook.Profile;
+import com.facebook.login.LoginResult;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInApi;
@@ -71,21 +72,19 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         FacebookSdk.sdkInitialize(getApplicationContext());
-        if (Profile.getCurrentProfile() != null) {
+        if (AccessToken.getCurrentAccessToken() != null) {
             View header = navigationView.getHeaderView(0);
             email = (TextView) header.findViewById(R.id.textView);
-            email.setText(Profile.getCurrentProfile().toString());
+            email.setText(AccessToken.getCurrentAccessToken().toString());
         }
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
                 .build();
-
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .enableAutoManage(this /* FragmentActivity */, this /* OnConnectionFailedListener */)
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
-
         OptionalPendingResult<GoogleSignInResult> opr = Auth.GoogleSignInApi.silentSignIn(mGoogleApiClient);
         if (opr.isDone()) {
             // If the user's cached credentials are valid, the OptionalPendingResult will be "done"
@@ -100,7 +99,6 @@ public class MainActivity extends AppCompatActivity
             email.setText(result.getSignInAccount().getEmail());
             name.setText(result.getSignInAccount().getDisplayName());
             photo.setImageURI(result.getSignInAccount().getPhotoUrl());
-
             Picasso.with(this).load(result.getSignInAccount().getPhotoUrl())
                     .resize(115, 115)
                     .into(photo);
