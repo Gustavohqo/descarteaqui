@@ -16,6 +16,8 @@ public class Database extends SQLiteOpenHelper {
     public static final String TABLE_MARKERS = "markers";
     public static final String TABLE_PETITIONS = "petitions";
     public static final String TABLE_RATES = "rates";
+    public static final String TABLE_TIPS = "tips";
+
 
     // Table Creating
     public static final String CREATE_TABLE_MARKERS = "create table "+ TABLE_MARKERS +"("
@@ -45,6 +47,19 @@ public class Database extends SQLiteOpenHelper {
             + "type_rate" + " text"
             +");";
 
+    public static final String CREATE_TABLE_TIPS = "create table "+ TABLE_TIPS +"("
+            + "_id" + " integer primary key autoincrement, "
+            + "cep" + " text, "
+            + "monday" + " integer, "
+            + "tuesday" + " integer, "
+            + "wednesday" + " integer, "
+            + "thursday" + " integer, "
+            + "friday" + " integer, "
+            + "saturday" + " integer, "
+            + "sunday" + " integer"
+            +");";
+
+
     public Database(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
@@ -56,6 +71,7 @@ public class Database extends SQLiteOpenHelper {
         db.execSQL(CREATE_TABLE_MARKERS);
         db.execSQL(CREATE_TABLE_PETITIONS);
         db.execSQL(CREATE_TABLE_RATES);
+        db.execSQL(CREATE_TABLE_TIPS);
     }
 
     @Override
@@ -64,6 +80,7 @@ public class Database extends SQLiteOpenHelper {
         db.execSQL("drop table if exists " + TABLE_PETITIONS);
         db.execSQL("drop table if exists " + TABLE_MARKERS);
         db.execSQL("drop table if exists " + TABLE_RATES);
+        db.execSQL("drop table if exists " + TABLE_TIPS);
 
         // create new tables
         onCreate(db);
