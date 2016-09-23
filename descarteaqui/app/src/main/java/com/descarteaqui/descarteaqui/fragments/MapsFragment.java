@@ -1,7 +1,6 @@
 package com.descarteaqui.descarteaqui.fragments;
 
 import android.Manifest;
-import android.annotation.TargetApi;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -12,7 +11,6 @@ import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
@@ -23,39 +21,49 @@ import android.widget.Toast;
 
 import com.descarteaqui.descarteaqui.R;
 
+import com.descarteaqui.descarteaqui.controllers.MarkersController;
+import com.descarteaqui.descarteaqui.database.MarkersDB;
 import com.github.clans.fab.FloatingActionButton;
-import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.model.BitmapDescriptor;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import java.util.ArrayList;
+import java.util.List;
 
 public class MapsFragment extends Fragment implements OnMapReadyCallback {
 
     private FloatingActionButton floatbuttonBattery, floatbuttonOil, floatbuttonChemistry, floatButtonHospital, floatButtonSelective, floatButtonClear;
     private LocationManager locationManager;
     private GoogleMap map;
-    private ArrayList<MarkerOptions> markers = new ArrayList<>();
+    private List<MarkerOptions> markers = new ArrayList<>();
     private ArrayList<String> options = new ArrayList<>();
     private TextView GPSError;
+    private MarkersDB MarkersDB;
+
+    private static final float DEFAULT_SCALE = 1;
+    private static final float MIN_SCALE = 0;
+    private static final long ANIMATION_DURATION = 200;
+    private static final String DEFAULT_COLOR = "#fc9b0d";
+    private static final String CLICKED_COLOR = "#bf7018";
 
     @Override
     public void onResume() {
 
         checkPermission();
 
-        if (!checkGPSEnable())
+        if (!checkGPSEnable()) {
             GPSError.setVisibility(View.VISIBLE);
-        else
+        } else {
+            if (map != null) {
+                createMarkers();
+            }
             GPSError.setVisibility(View.INVISIBLE);
+        }
 
         super.onResume();
     }
 
-    @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
@@ -97,6 +105,15 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
         floatButtonHospital.setOnClickListener(listener);
         floatButtonClear.setOnClickListener(listener);
 
+
+        MarkersDB = new MarkersDB(getActivity());
+        markers = MarkersDB.getMarkers();
+
+        // Populate the database
+        if (markers == null) {
+            MarkersController.createMarkers(getActivity());
+        }
+
         return rootView;
     }
 
@@ -105,6 +122,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
         try {
             isGPSenabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
         } catch (Exception ex) {
+            Toast.makeText(getActivity(), ex.getMessage(), Toast.LENGTH_SHORT).show();
         }
 
         return isGPSenabled;
@@ -128,7 +146,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
             dialog.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface paramDialogInterface, int paramInt) {
-                    Toast.makeText(getActivity(), "Para usar o mapa, é necessário ativar a Localização", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "Por favor, ative a Localização", Toast.LENGTH_SHORT).show();
                 }
             });
             dialog.show();
@@ -163,116 +181,81 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
         map.setPadding(0, 170, 0, 0);
         map.getUiSettings().setMapToolbarEnabled(false);
 
-        createMarkers();
+        // Create the markers in map
+        if (checkGPSEnable())
+            createMarkers();
 
     }
+
+
 
     private void createMarkers(){
+        markers = MarkersDB.getMarkers();
 
-        BitmapDescriptor oil_location = BitmapDescriptorFactory.fromResource(R.drawable.ic_oil_location);
-        BitmapDescriptor battery_location = BitmapDescriptorFactory.fromResource(R.drawable.ic_battery_location);
-        BitmapDescriptor chemical_location = BitmapDescriptorFactory.fromResource(R.drawable.ic_chemical_location);
-        BitmapDescriptor selective_location = BitmapDescriptorFactory.fromResource(R.drawable.ic_selective_location);
-        BitmapDescriptor hospital_location = BitmapDescriptorFactory.fromResource(R.drawable.ic_hospital_location);
-
-        MarkerOptions loc1 = new MarkerOptions()
-                .position(new LatLng(-7.215192, -35.909692))
-                .title("UFCG")
-                .anchor(0.0f, 1.0f)
-                .snippet("Coleta de Óleo")
-                .icon(oil_location);
-
-        MarkerOptions loc2 = new MarkerOptions()
-                .position(new LatLng(-7.216374, -35.915185))
-                .title("CITTA")
-                .anchor(0.0f, 1.0f)
-                .snippet("Lixo Eletrônico")
-                .icon(battery_location);
-
-        MarkerOptions loc3 = new MarkerOptions()
-                .position(new LatLng(-7.218522, -35.902932))
-                .title("Lugar aí 1")
-                .anchor(0.0f, 1.0f)
-                .snippet("Lixo Hospitalar")
-                .icon(hospital_location);
-
-        MarkerOptions loc4 = new MarkerOptions()
-                .position(new LatLng(-7.219167, -35.912647))
-                .title("Lugar aí 2")
-                .anchor(0.0f, 1.0f)
-                .snippet("Coleta Seletiva")
-                .icon(selective_location);
-
-        MarkerOptions loc5 = new MarkerOptions()
-                .position(new LatLng(-7.213913, -35.896774))
-                .title("Lugar aí 3")
-                .anchor(0.0f, 1.0f)
-                .snippet("Lixo Químico")
-                .icon(chemical_location);
-
-        markers.add(loc1);
-        markers.add(loc2);
-        markers.add(loc3);
-        markers.add(loc4);
-        markers.add(loc5);
-
-        addMarkers(markers);
-    }
-
-    private void addMarkers(ArrayList<MarkerOptions> markers){
-        for (MarkerOptions mark: markers) {
-            map.addMarker(mark);
+        for (MarkerOptions marker: markers) {
+            map.addMarker(marker);
         }
     }
+
 
     public void floatButtonClick(View v) {
 
         switch (v.getId()){
             case R.id.fab_battery:
+
                 setFABColor(floatbuttonBattery);
                 filterBy("Eletrônico");
                 break;
+
             case R.id.fab_oil:
+
                 setFABColor(floatbuttonOil);
                 filterBy("Óleo");
                 break;
+
             case R.id.fab_chemistry:
+
                 setFABColor(floatbuttonChemistry);
                 filterBy("Químico");
                 break;
+
             case R.id.fab_hospital:
+
                 setFABColor(floatButtonHospital);
                 filterBy("Hospitalar");
                 break;
+
             case R.id.fab_selective:
+
                 setFABColor(floatButtonSelective);
                 filterBy("Coleta Seletiva");
                 break;
+
             case R.id.fab_clear_filter:
+
                 options.clear();
                 map.clear();
                 createMarkers();
-                floatButtonClear.animate().scaleX(0).scaleY(0).start();
+                floatButtonClear.animate().scaleX(MIN_SCALE).scaleY(MIN_SCALE).start();
                 defaultColorAll();
                 break;
-            default:
-                break;
         }
+
     }
 
     private void setFABColor(FloatingActionButton floatButton){
-        if (floatButton.getColorNormal() == Color.parseColor("#fc9b0d"))
-            floatButton.setColorNormal(Color.parseColor("#bf7018"));
+        if (floatButton.getColorNormal() == Color.parseColor(DEFAULT_COLOR))
+                floatButton.setColorNormal(Color.parseColor(CLICKED_COLOR));
         else
-            floatButton.setColorNormal(Color.parseColor("#fc9b0d"));
+            floatButton.setColorNormal(Color.parseColor(DEFAULT_COLOR));
     }
 
     private void defaultColorAll(){
-        floatbuttonBattery.setColorNormal(Color.parseColor("#fc9b0d"));
-        floatbuttonChemistry.setColorNormal(Color.parseColor("#fc9b0d"));
-        floatButtonSelective.setColorNormal(Color.parseColor("#fc9b0d"));
-        floatButtonHospital.setColorNormal(Color.parseColor("#fc9b0d"));
-        floatbuttonOil.setColorNormal(Color.parseColor("#fc9b0d"));
+        floatbuttonBattery.setColorNormal(Color.parseColor(DEFAULT_COLOR));
+        floatbuttonChemistry.setColorNormal(Color.parseColor(DEFAULT_COLOR));
+        floatButtonSelective.setColorNormal(Color.parseColor(DEFAULT_COLOR));
+        floatButtonHospital.setColorNormal(Color.parseColor(DEFAULT_COLOR));
+        floatbuttonOil.setColorNormal(Color.parseColor(DEFAULT_COLOR));
     }
 
     private void filterBy(String trashType){
@@ -291,7 +274,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
         }
 
         if (!options.isEmpty())
-            floatButtonClear.animate().scaleX(1).scaleY(1).setDuration(200).start();
+            floatButtonClear.animate().scaleX(DEFAULT_SCALE).scaleY(DEFAULT_SCALE).setDuration(ANIMATION_DURATION).start();
         else
             floatButtonClick(floatButtonClear);
 
