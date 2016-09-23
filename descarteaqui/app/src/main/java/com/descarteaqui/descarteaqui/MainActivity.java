@@ -4,6 +4,7 @@ import android.app.FragmentManager;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.NavigationView;
 import android.app.Fragment;
 import android.support.v4.view.GravityCompat;
@@ -24,13 +25,35 @@ import com.descarteaqui.descarteaqui.controllers.UserController;
 import com.descarteaqui.descarteaqui.fragments.MapsFragment;
 import com.descarteaqui.descarteaqui.fragments.PetitionsFragment;
 import com.descarteaqui.descarteaqui.fragments.TipFragment;
+<<<<<<< HEAD
+=======
+import com.facebook.AccessToken;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookSdk;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
+>>>>>>> refs/remotes/origin/fixLogin
 import com.facebook.Profile;
+import com.facebook.login.LoginResult;
+import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+<<<<<<< HEAD
+=======
+import com.google.android.gms.auth.api.signin.GoogleSignInApi;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.auth.api.signin.GoogleSignInResult;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.OptionalPendingResult;
+>>>>>>> refs/remotes/origin/fixLogin
 import com.squareup.picasso.Picasso;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements  GoogleApiClient.OnConnectionFailedListener, NavigationView.OnNavigationItemSelectedListener {
 
     NavigationView navigationView = null;
     Toolbar toolbar = null;
@@ -39,6 +62,11 @@ public class MainActivity extends AppCompatActivity
     private TextView email;
     private ImageView photo;
     private TextView name;
+<<<<<<< HEAD
+=======
+    private GoogleApiClient mGoogleApiClient;
+    private CallbackManager callbackManager;
+>>>>>>> refs/remotes/origin/fixLogin
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,30 +89,112 @@ public class MainActivity extends AppCompatActivity
 
         navigationView.setNavigationItemSelectedListener(this);
 
-        if(App.getInstance() != null && App.getInstance().getUserGoogleInfo() != null) {
-            userInfo = App.getInstance().getUserGoogleInfo();
-            refreshScreenInformation();
-        }else if(App.getInstance() != null && App.getInstance().getFacebookProfile() != null) {
-            facebookProfile = App.getInstance().getFacebookProfile();
-            refreshFacebookInformation();
+        FacebookSdk.sdkInitialize(getApplicationContext());
+        FacebookSdk.sdkInitialize(getApplicationContext());
+
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+
+                callbackManager = CallbackManager.Factory.create();
+                System.out.println("inicio");
+                GraphRequest request = GraphRequest.newMeRequest(
+                        AccessToken.getCurrentAccessToken(),
+                        new GraphRequest.GraphJSONObjectCallback() {
+                            @Override
+                            public void onCompleted(
+                                    JSONObject object,
+                                    GraphResponse response) {
+                                System.out.println("aqui");
+                                String email;
+                                try {
+                                    email = object.getString("email");
+                                }catch(Exception e){
+                                    email = "";
+                                }
+                                refreshFacebookInformation(email);
+                                System.out.println(object);
+                                // Application code
+                            }
+                        });
+                Bundle parameters = new Bundle();
+                parameters.putString("fields", "id,email,link");
+                request.setParameters(parameters);
+                request.executeAsync();
+                System.out.println("fim");
+
+            }
+        }, 100);
+
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .enableAutoManage(this /* FragmentActivity */, this /* OnConnectionFailedListener */)
+                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+                .build();
+        OptionalPendingResult<GoogleSignInResult> opr = Auth.GoogleSignInApi.silentSignIn(mGoogleApiClient);
+        if (opr.isDone()) {
+            // If the user's cached credentials are valid, the OptionalPendingResult will be "done"
+            // and the GoogleSignInResult will be available instantly.
+            //Log.d(TAG, "Got cached sign-in");
+            GoogleSignInResult result = opr.get();
+            View header = navigationView.getHeaderView(0);
+            photo = (ImageView)header.findViewById(R.id.imageView);
+            email = (TextView)header.findViewById(R.id.textView);
+            name = (TextView)header.findViewById(R.id.nameView);
+
+            email.setText(result.getSignInAccount().getEmail());
+            name.setText(result.getSignInAccount().getDisplayName());
+            photo.setImageURI(result.getSignInAccount().getPhotoUrl());
+            Picasso.with(this).load(result.getSignInAccount().getPhotoUrl())
+                    .resize(115, 115)
+                    .into(photo);
         }
 
+<<<<<<< HEAD
+=======
+            if (App.getInstance() != null && App.getInstance().getUserGoogleInfo() != null) {
+                userInfo = App.getInstance().getUserGoogleInfo();
+                //refreshScreenInformation();
+            } else if (App.getInstance() != null && App.getInstance().getFacebookProfile() != null) {
+                facebookProfile = App.getInstance().getFacebookProfile();
+                //refreshFacebookInformation();
+            }
     }
 
-    private void refreshFacebookInformation(){
+    @Override
+    public void onConnectionFailed(ConnectionResult connectionResult) {
+        // An unresolvable error has occurred and Google APIs (including Sign-In) will not
+        // be available.
+        //Log.d(TAG, "onConnectionFailed:" + connectionResult);
+>>>>>>> refs/remotes/origin/fixLogin
+    }
+
+
+    private void refreshFacebookInformation(String emailUser){
         View header=navigationView.getHeaderView(0);
         // Bitmap bmp = BitmapFactory.decodeStream(userInfo.getPhotoUrl());
         photo = (ImageView)header.findViewById(R.id.imageView);
         email = (TextView)header.findViewById(R.id.textView);
         name = (TextView)header.findViewById(R.id.nameView);
 
+<<<<<<< HEAD
         name.setText("Olá, " + facebookProfile.getFirstName());
         email.setText("Seja bem vindo ao DescarteAqui");
         photo.setImageURI(facebookProfile.getProfilePictureUri(120,120));
+=======
+        if(Profile.getCurrentProfile() != null) {
+            name.setText("Bem vindo, " + Profile.getCurrentProfile().getName());
+             email.setText(emailUser);
+             photo.setImageURI(Profile.getCurrentProfile().getProfilePictureUri(120, 120));
+>>>>>>> refs/remotes/origin/fixLogin
 
-        Picasso.with(this).load(facebookProfile.getProfilePictureUri(120,120))
+            Picasso.with(this).load(Profile.getCurrentProfile().getProfilePictureUri(120, 120))
                 .resize(120, 120)
                 .into(photo);
+        }
     }
 
     private void refreshScreenInformation()  {

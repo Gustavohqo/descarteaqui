@@ -8,7 +8,7 @@
 
     <!--Navigation Drawer Menu-->
     <string name="map_icon">Mapa</string>
-    <string name="tip_icon">Dicas</string>
+    <string name="tip_icon">EcoDicas</string>
     <string name="petition_icon">Petições</string>
     <string name="account_icon">Contas</string>
     <string name="config_separator">Configurações</string>
