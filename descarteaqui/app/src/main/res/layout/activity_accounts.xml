@@ -24,7 +24,7 @@
             android:layout_height="wrap_content"
             android:text="@string/signed_out"
             android:textColor="@android:color/white"
-            android:textSize="14sp" />
+            android:textSize="0sp" />
 
 
         <com.facebook.login.widget.LoginButton
@@ -33,12 +33,11 @@
             android:layout_height="wrap_content"
             android:clickable="true"
             android:paddingTop="15dp"
-            android:paddingBottom="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginLeft="10dp"
-            android:layout_below="@+id/info"
+            android:paddingBottom="15dp"
+            android:paddingRight="10dp"
+            android:paddingLeft="10dp"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="320dp" />
+            android:layout_centerVertical="true" />
 
         <com.google.android.gms.common.SignInButton
             android:id="@+id/sign_in_button"
@@ -46,43 +45,35 @@
             android:layout_height="wrap_content"
             android:clickable="true"
             android:paddingTop="15dp"
-            android:paddingBottom="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginLeft="10dp"
-            android:layout_below="@+id/info"
+            android:paddingBottom="15dp"
+            android:paddingRight="-3dp"
+            android:paddingLeft="-3dp"
+            android:layout_below="@+id/login_button"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="380dp" />
+             />
 
         <Button
             android:id="@+id/sign_out_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/sign_out"
-            android:layout_below="@+id/info"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="105dp" />
+            android:text="Sair de sua conta Google"
+            android:paddingTop="15dp"
+            android:paddingBottom="15dp"
+            android:layout_below="@+id/login_button"
+            android:layout_alignEnd="@+id/sign_in_button"
+            android:layout_centerHorizontal="true"/>
 
-        <Button
-            android:id="@+id/disconnect_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/disconnect"
-            android:layout_alignTop="@+id/sign_out_button"
-            android:layout_alignStart="@+id/login_button" />
-       <!-- <LinearLayout
-            android:id="@+id/sign_out_and_disconnect"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:orientation="horizontal"
-            android:paddingLeft="16dp"
-            android:paddingRight="16dp"
-            android:visibility="gone"
-            tools:visibility="visible">
+    <!--se for possível tirar esse botão
+    -->
+    <Button
+        android:id="@+id/disconnect_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="@string/disconnect"
+        android:layout_marginTop="12309132dp"
+         />-->
 
-
-        </LinearLayout>-->
 
 </RelativeLayout>
