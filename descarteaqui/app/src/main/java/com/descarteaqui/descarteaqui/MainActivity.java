@@ -25,27 +25,25 @@ import com.descarteaqui.descarteaqui.controllers.UserController;
 import com.descarteaqui.descarteaqui.fragments.MapsFragment;
 import com.descarteaqui.descarteaqui.fragments.PetitionsFragment;
 import com.descarteaqui.descarteaqui.fragments.TipFragment;
-<<<<<<< HEAD
-=======
+
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookSdk;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
->>>>>>> refs/remotes/origin/fixLogin
+
 import com.facebook.Profile;
 import com.facebook.login.LoginResult;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-<<<<<<< HEAD
-=======
+
 import com.google.android.gms.auth.api.signin.GoogleSignInApi;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.OptionalPendingResult;
->>>>>>> refs/remotes/origin/fixLogin
+
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
@@ -62,11 +60,9 @@ public class MainActivity extends AppCompatActivity
     private TextView email;
     private ImageView photo;
     private TextView name;
-<<<<<<< HEAD
-=======
+
     private GoogleApiClient mGoogleApiClient;
     private CallbackManager callbackManager;
->>>>>>> refs/remotes/origin/fixLogin
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,7 +94,6 @@ public class MainActivity extends AppCompatActivity
             public void run() {
 
                 callbackManager = CallbackManager.Factory.create();
-                System.out.println("inicio");
                 GraphRequest request = GraphRequest.newMeRequest(
                         AccessToken.getCurrentAccessToken(),
                         new GraphRequest.GraphJSONObjectCallback() {
@@ -106,23 +101,19 @@ public class MainActivity extends AppCompatActivity
                             public void onCompleted(
                                     JSONObject object,
                                     GraphResponse response) {
-                                System.out.println("aqui");
-                                String email;
+                                String email = "" ;
                                 try {
-                                    email = object.getString("email");
-                                }catch(Exception e){
-                                    email = "";
-                                }
+                                    email = object.optString("email");
+                                    UserController.setCurrentUser(email);
+                                }catch(Exception e){}
+                                
                                 refreshFacebookInformation(email);
-                                System.out.println(object);
-                                // Application code
                             }
                         });
                 Bundle parameters = new Bundle();
                 parameters.putString("fields", "id,email,link");
                 request.setParameters(parameters);
                 request.executeAsync();
-                System.out.println("fim");
 
             }
         }, 100);
@@ -153,9 +144,7 @@ public class MainActivity extends AppCompatActivity
                     .into(photo);
         }
 
-<<<<<<< HEAD
-=======
-            if (App.getInstance() != null && App.getInstance().getUserGoogleInfo() != null) {
+      if (App.getInstance() != null && App.getInstance().getUserGoogleInfo() != null) {
                 userInfo = App.getInstance().getUserGoogleInfo();
                 //refreshScreenInformation();
             } else if (App.getInstance() != null && App.getInstance().getFacebookProfile() != null) {
@@ -169,7 +158,6 @@ public class MainActivity extends AppCompatActivity
         // An unresolvable error has occurred and Google APIs (including Sign-In) will not
         // be available.
         //Log.d(TAG, "onConnectionFailed:" + connectionResult);
->>>>>>> refs/remotes/origin/fixLogin
     }
 
 
@@ -180,16 +168,10 @@ public class MainActivity extends AppCompatActivity
         email = (TextView)header.findViewById(R.id.textView);
         name = (TextView)header.findViewById(R.id.nameView);
 
-<<<<<<< HEAD
-        name.setText("Olá, " + facebookProfile.getFirstName());
-        email.setText("Seja bem vindo ao DescarteAqui");
-        photo.setImageURI(facebookProfile.getProfilePictureUri(120,120));
-=======
         if(Profile.getCurrentProfile() != null) {
             name.setText("Bem vindo, " + Profile.getCurrentProfile().getName());
-             email.setText(emailUser);
+             email.setText(UserController.getCurrentUser());
              photo.setImageURI(Profile.getCurrentProfile().getProfilePictureUri(120, 120));
->>>>>>> refs/remotes/origin/fixLogin
 
             Picasso.with(this).load(Profile.getCurrentProfile().getProfilePictureUri(120, 120))
                 .resize(120, 120)

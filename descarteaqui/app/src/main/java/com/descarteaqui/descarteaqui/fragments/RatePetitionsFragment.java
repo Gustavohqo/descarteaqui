@@ -124,7 +124,7 @@ public class RatePetitionsFragment extends Fragment {
 
     private List<Petition> myPetitionsList(){
         activeList.clear();
-        List<Petition> lista = PetitionController.getMyPetitions(getActivity(), UserController.getCurrentUser(getActivity()));
+        List<Petition> lista = PetitionController.getMyPetitions(getActivity(), UserController.getCurrentUser());
         activeList.addAll(lista);
 
         return activeList;
@@ -132,7 +132,7 @@ public class RatePetitionsFragment extends Fragment {
 
     private List<Petition> allPetitionsList(){
         activeList.clear();
-        List<Petition> lista = PetitionController.getAllPetitions(getActivity(), UserController.getCurrentUser(getActivity()));
+        List<Petition> lista = PetitionController.getAllPetitions(getActivity(), UserController.getCurrentUser());
         activeList.addAll(lista);
 
         return activeList;

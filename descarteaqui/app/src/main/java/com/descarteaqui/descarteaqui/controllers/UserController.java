@@ -14,14 +14,18 @@ import java.util.List;
 public abstract class UserController {
 
     private static RatesDB RatesDB;
+    private static String userEmail = "";
 
-    public static String getCurrentUser(Context ctx) {
+    public static String getCurrentUser() {
+        return userEmail;
+    }
 
-        return "gabrielguimoliver@gmail.com";
+    public static void setCurrentUser(String currentUser){
+        userEmail = currentUser;
     }
 
     public static boolean isUserLogged(){
-        return true;
+        return !userEmail.equals("");
     }
 
     public static void removeRatedPetition(Context ctx, String rated_by, int petition_id){

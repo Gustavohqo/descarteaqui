@@ -60,7 +60,7 @@ public class SendPetitionFragment extends Fragment {
         floatbuttonSend = (FloatingActionButton) rootView.findViewById(R.id.send_button);
         citySpinner = (Spinner) rootView.findViewById(R.id.city_spinner);
         senderEmail = (TextView) rootView.findViewById(R.id.sender_email);
-        senderEmail.setText(senderEmail.getText() + UserController.getCurrentUser(getActivity()));
+        senderEmail.setText(senderEmail.getText() + UserController.getCurrentUser());
         senderEmail.setSelected(true);
 
         floatbuttonSend.setOnClickListener(new View.OnClickListener(){
@@ -68,7 +68,7 @@ public class SendPetitionFragment extends Fragment {
             public void onClick(View v) {
                 if (validateFields() && userCanCreate()){
                     Petition petition = new Petition(PetitionController.getLastID(getActivity()), streetField.getText().toString(),
-                            districtField.getText().toString(),justificationField.getText().toString(), UserController.getCurrentUser(getActivity()));
+                            districtField.getText().toString(),justificationField.getText().toString(), UserController.getCurrentUser());
 
                     PetitionController.createPetition(getActivity(), petition);
 
@@ -95,7 +95,7 @@ public class SendPetitionFragment extends Fragment {
     }
 
     private boolean userCanCreate(){
-        List<Petition> myPetitions = PetitionController.getMyPetitions(getActivity(), UserController.getCurrentUser(getActivity()));
+        List<Petition> myPetitions = PetitionController.getMyPetitions(getActivity(), UserController.getCurrentUser());
 
 
         int districtCreateLimit = 0;

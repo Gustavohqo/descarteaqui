@@ -52,7 +52,7 @@ public class PetitionAdapter extends RecyclerView.Adapter<PetitionAdapter.MyView
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
 
-        ratedPetitions = UserController.getRatedPetitions(ctx, UserController.getCurrentUser(ctx));
+        ratedPetitions = UserController.getRatedPetitions(ctx, UserController.getCurrentUser());
 
         holder.streetName.setText(String.valueOf(mList.get(position).getStreetName()));
         holder.discrictName.setText(String.valueOf(mList.get(position).getDistrictName()));
@@ -63,9 +63,9 @@ public class PetitionAdapter extends RecyclerView.Adapter<PetitionAdapter.MyView
 
         for (int i = 0; i < ratedPetitions.size(); i++) {
             if (ratedPetitions.get(i).getID() == mList.get(position).getID()){
-                if (UserController.getTypeRate(ctx, mList.get(position).getID(), UserController.getCurrentUser(ctx)).equals("ng")){
+                if (UserController.getTypeRate(ctx, mList.get(position).getID(), UserController.getCurrentUser()).equals("ng")){
                     holder.rateNGButton.animate().scaleX(alreadyClickNG).scaleY(alreadyClickNG).setDuration(200).start();
-                } else if (UserController.getTypeRate(ctx, mList.get(position).getID(), UserController.getCurrentUser(ctx)).equals("ok")){
+                } else if (UserController.getTypeRate(ctx, mList.get(position).getID(), UserController.getCurrentUser()).equals("ok")){
                     holder.rateOKButton.animate().scaleX(alreadyClickOK).scaleY(alreadyClickOK).setDuration(200).start();
                 }
             }
@@ -74,12 +74,12 @@ public class PetitionAdapter extends RecyclerView.Adapter<PetitionAdapter.MyView
         holder.rateNGButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!mList.get(position).getCreator().equals(UserController.getCurrentUser(ctx))) {
+                if (!mList.get(position).getCreator().equals(UserController.getCurrentUser())) {
                     if (userCanRate(mList.get(position), holder)) {
                         mList.get(position).rateNG();
                         holder.rateNGButton.animate().scaleX(alreadyClickNG).scaleY(alreadyClickNG).setDuration(200).start();
                         holder.rateNG.setText("+ " + String.valueOf(mList.get(position).getRatesNG()));
-                        UserController.addRatedPetition(ctx, UserController.getCurrentUser(ctx), mList.get(position).getID(), UserController.getCurrentUser(ctx), "ng");
+                        UserController.addRatedPetition(ctx, UserController.getCurrentUser(), mList.get(position).getID(), UserController.getCurrentUser(), "ng");
                         PetitionController.updatePetition(ctx, mList.get(position));
                     }
                 } else {
@@ -91,13 +91,13 @@ public class PetitionAdapter extends RecyclerView.Adapter<PetitionAdapter.MyView
         holder.rateOKButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!mList.get(position).getCreator().equals(UserController.getCurrentUser(ctx))) {
+                if (!mList.get(position).getCreator().equals(UserController.getCurrentUser())) {
 
                     if (userCanRate(mList.get(position), holder)) {
                         mList.get(position).rateOK();
                         holder.rateOKButton.animate().scaleX(alreadyClickOK).scaleY(alreadyClickOK).setDuration(200).start();
                         holder.rateOK.setText("+ " + String.valueOf(mList.get(position).getRatesOK()));
-                        UserController.addRatedPetition(ctx, UserController.getCurrentUser(ctx), mList.get(position).getID(), UserController.getCurrentUser(ctx), "ok");
+                        UserController.addRatedPetition(ctx, UserController.getCurrentUser(), mList.get(position).getID(), UserController.getCurrentUser(), "ok");
                         PetitionController.updatePetition(ctx, mList.get(position));
                     }
                 } else {
@@ -142,7 +142,7 @@ public class PetitionAdapter extends RecyclerView.Adapter<PetitionAdapter.MyView
     }
 
     private boolean userCanRate(Petition petition, final MyViewHolder holder){
-        List<Petition> ratedPetitions = UserController.getRatedPetitions(ctx, UserController.getCurrentUser(ctx));
+        List<Petition> ratedPetitions = UserController.getRatedPetitions(ctx, UserController.getCurrentUser());
 
         int districtRateLimit = 0;
         boolean alreadyRated = false;
@@ -159,7 +159,7 @@ public class PetitionAdapter extends RecyclerView.Adapter<PetitionAdapter.MyView
 
         if (alreadyRated){
 
-            final String ratedType = UserController.getTypeRate(ctx, petition.getID(), UserController.getCurrentUser(ctx));
+            final String ratedType = UserController.getTypeRate(ctx, petition.getID(), UserController.getCurrentUser());
             final Petition thisPetition = petition;
             final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(ctx);
             alertDialogBuilder.setTitle("Ops! Você já votou nessa petição.");
@@ -178,7 +178,7 @@ public class PetitionAdapter extends RecyclerView.Adapter<PetitionAdapter.MyView
                         holder.rateOKButton.animate().scaleX(notAlreadyClickOK).scaleY(notAlreadyClickOK).setDuration(200).start();
                         holder.rateOK.setText("+ " + String.valueOf(thisPetition.getRatesOK()));
                     }
-                    UserController.removeRatedPetition(ctx, UserController.getCurrentUser(ctx), thisPetition.getID());
+                    UserController.removeRatedPetition(ctx, UserController.getCurrentUser(), thisPetition.getID());
                     PetitionController.updatePetition(ctx, thisPetition);
                 }
             });

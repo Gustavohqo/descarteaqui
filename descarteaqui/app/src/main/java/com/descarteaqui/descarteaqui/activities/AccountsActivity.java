@@ -14,12 +14,15 @@ import android.content.Context;
 import com.descarteaqui.descarteaqui.MainActivity;
 import com.descarteaqui.descarteaqui.controllers.App;
 import com.descarteaqui.descarteaqui.R;
+import com.descarteaqui.descarteaqui.controllers.UserController;
 import com.facebook.AccessToken;
 import com.facebook.AccessTokenTracker;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.facebook.Profile;
@@ -35,6 +38,8 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.OptionalPendingResult;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
+
+import org.json.JSONObject;
 
 import java.util.Arrays;
 
@@ -66,13 +71,13 @@ public class AccountsActivity extends AppCompatActivity  implements
 
         loginButton = (LoginButton)findViewById(R.id.login_button);
 
-        loginButton.setReadPermissions(Arrays.asList(
-                "public_profile", "email"));
+        loginButton.setReadPermissions(Arrays.asList("email"));
 
         // facebook login
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
+
                 if(Profile.getCurrentProfile() == null) {
                     mProfileTracker = new ProfileTracker() {
                         @Override
@@ -86,6 +91,7 @@ public class AccountsActivity extends AppCompatActivity  implements
                     // no need to call startTracking() on mProfileTracker
                     // because it is called by its constructor, internally.
                 }
+
                 findViewById(R.id.sign_in_button).setEnabled(false);
                 toastLogin();
             }
@@ -272,7 +278,6 @@ public class AccountsActivity extends AppCompatActivity  implements
     private void updateUI(boolean signedIn) {
         if (signedIn) {
             findViewById(R.id.sign_in_button).setVisibility(View.GONE);
-         //   findViewById(R.id.sign_out_and_disconnect).setVisibility(View.VISIBLE);
             findViewById(R.id.sign_out_button).setVisibility(View.VISIBLE);
             findViewById(R.id.disconnect_button).setVisibility(View.VISIBLE);
             findViewById(R.id.login_button).setEnabled(false);
@@ -313,6 +318,7 @@ public class AccountsActivity extends AppCompatActivity  implements
         Context contexto = getApplicationContext();
         String texto = "Você deslogou da sua conta.";
         int duracao = Toast.LENGTH_LONG;
+        UserController.setCurrentUser("");
         Toast toast = Toast.makeText(contexto, texto, duracao);
         toast.show();
     }
