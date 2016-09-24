@@ -4,7 +4,7 @@
     tools:context=".fragments.TipFragment">
 
     <TextView
-        android:id="@+id/lblListItem"
+        android:id="@+id/empresasListItem"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:paddingBottom="5dp"
@@ -15,7 +15,7 @@
     <ExpandableListView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/expListView"
+        android:id="@+id/empresasListView"
         android:layout_below="@+id/linearLayout"
         android:layout_alignParentStart="true"
         android:layout_marginTop="10dp"
@@ -28,7 +28,7 @@
         android:id="@+id/linearLayout">
 
         <TextView
-            android:id="@+id/lblListHeader"
+            android:id="@+id/empresasListHeader"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:gravity="center_vertical"
