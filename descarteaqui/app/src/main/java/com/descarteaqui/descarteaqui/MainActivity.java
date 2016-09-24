@@ -136,6 +136,7 @@ public class MainActivity extends AppCompatActivity
             email = (TextView)header.findViewById(R.id.textView);
             name = (TextView)header.findViewById(R.id.nameView);
 
+            UserController.setCurrentUser(result.getSignInAccount().getEmail());
             email.setText(result.getSignInAccount().getEmail());
             name.setText(result.getSignInAccount().getDisplayName());
             photo.setImageURI(result.getSignInAccount().getPhotoUrl());

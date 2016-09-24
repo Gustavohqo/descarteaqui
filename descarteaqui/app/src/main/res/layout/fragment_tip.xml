@@ -3,42 +3,75 @@
     android:layout_height="match_parent"
     tools:context=".fragments.TipFragment">
 
-    <TextView
-        android:id="@+id/lblListItem"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:paddingBottom="5dp"
-        android:paddingLeft="?android:attr/expandableListPreferredChildPaddingLeft"
-        android:paddingTop="5dp"
-        android:textSize="13sp" />
-
-    <ExpandableListView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/expListView"
-        android:layout_below="@+id/linearLayout"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="10dp"
-        />
-
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="52dp"
-        android:orientation="vertical"
-        android:id="@+id/linearLayout">
+        android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/lblListHeader"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:gravity="center_vertical"
-            android:paddingLeft="6dip"
-            android:paddingTop="6dip"
-            android:textColor="#ea8a28"
-            android:textSize="12dp"
-            android:textStyle="bold"
-            tools:ignore="SpUsage" />
+            android:layout_height="wrap_content"
+            android:paddingTop="55dp"
+            android:orientation="horizontal"
+            android:id="@+id/linear_layout">
 
-    </LinearLayout>
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:text="ECODICAS"
+                android:id="@+id/tab_dicas"
+                android:textAlignment="center"
+                android:gravity="center"
+                android:layout_weight="1"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:textColor="@android:color/white"
+                android:background="@color/colorNav"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:text="EMPRESAS"
+                android:textAlignment="center"
+                android:id="@+id/tab_empresas"
+                android:gravity="center"
+                android:layout_weight="1"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:textColor="@android:color/white"
+                android:background="@color/colorNav"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:text="DIA DO LIXO"
+                android:textAlignment="center"
+                android:id="@+id/tab_cep"
+                android:gravity="center"
+                android:layout_weight="1"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:textColor="@android:color/white"
+                android:background="@color/colorNav"/>
+
+
+        </LinearLayout>
+
+        <ExpandableListView
+            android:id="@+id/expandable_list_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/linear_layout">
+
+        </ExpandableListView>
+
+    </RelativeLayout>
+
+    <!--<RelativeLayout-->
+    <!--android:id="@+id/cep_layout"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:layout_below="@id/linear_layout">-->
+
+    <!--</RelativeLayout>-->
 
 </RelativeLayout>
