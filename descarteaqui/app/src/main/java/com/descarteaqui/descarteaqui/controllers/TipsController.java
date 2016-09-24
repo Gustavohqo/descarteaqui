@@ -17,26 +17,42 @@ public abstract class TipsController {
     private static TipsDB TipsDB;
 
     public static void createCEPs(Context ctx){
-        addCEP(ctx, "58433-521", new int[]{1, 0, 0, 0, 0, 0, 0});
-        addCEP(ctx, "58433-522", new int[]{1, 1, 0, 0, 0, 0, 0});
-        addCEP(ctx, "58433-523", new int[]{1, 1, 1, 0, 0, 0, 0});
-        addCEP(ctx, "58433-524", new int[]{1, 1, 1, 1, 0, 0, 0});
-        addCEP(ctx, "58433-525", new int[]{1, 1, 1, 1, 1, 0, 0});
-        addCEP(ctx, "58433-526", new int[]{1, 1, 1, 1, 1, 1, 0});
-        addCEP(ctx, "58433-527", new int[]{1, 1, 1, 1, 1, 1, 1});
-        addCEP(ctx, "58433-528", new int[]{1, 0, 1, 0, 1, 0, 1});
-        addCEP(ctx, "58433-528", new int[]{0, 1, 0, 1, 0, 1, 0});
+        TipsDB = new TipsDB(ctx);
+
+        if (getAllCPS(ctx) == null){
+            TipsDB.addCEP("58433-521", "Rua Aprígio Veloso, Bodocongó", new String[]{"Sim", "Não", "Não", "Não", "Não", "Não", "Não"});
+            TipsDB.addCEP("58433-522", "Rua Maria Helena, Bodocongó 3", new String[]{"Sim", "Sim", "Não", "Não", "Não", "Não", "Não"});
+            TipsDB.addCEP("58433-523", "Rua Republica Francesa, Bairro das Nações", new String[]{"Sim", "Sim", "Sim", "Não", "Não", "Não", "Não"});
+            TipsDB.addCEP("58433-524", "Rua Gonçalves Dias, Monte Castelo", new String[]{"Sim", "Sim", "Sim", "Sim", "Não", "Não", "Não"});
+            TipsDB.addCEP("58433-525", "Rua Leonino Carneiro, Centro", new String[]{"Sim", "Sim", "Sim", "Sim", "Sim", "Não", "Não"});
+            TipsDB.addCEP("58433-526", "Rua Clementino Siqueira, Jardim Tavares", new String[]{"Sim", "Sim", "Sim", "Sim", "Sim", "Sim", "Não"});
+            TipsDB.addCEP("58433-527", "Rua Dr. Vasconcelos, Alto Branco", new String[]{"Sim", "Sim", "Sim", "Sim", "Sim", "Sim", "Sim"});
+        }
     }
 
-    public static void addCEP(Context ctx, String CEP, int[] trashDays) {
+    public static List<String> getAllCPS(Context ctx){
+        TipsDB = new TipsDB(ctx);
+
+        return TipsDB.getAllCPF();
+    }
+
+    public static void addCEP(Context ctx, String address, String CEP, String[] trashDays) {
 
         TipsDB = new TipsDB(ctx);
 
-        TipsDB.addCEP(CEP, trashDays);
+        TipsDB.addCEP(CEP, address, trashDays);
 
     }
 
-    public static List<Boolean> searchCEP(Context ctx, String CEP){
+    public static String getAddress(Context ctx, String CEP){
+        TipsDB = new TipsDB(ctx);
+
+        String address = TipsDB.getAddress(CEP);
+
+        return address;
+    }
+
+    public static List<String> searchCEP(Context ctx, String CEP){
 
         TipsDB = new TipsDB(ctx);
 

@@ -1,20 +1,18 @@
 package com.descarteaqui.descarteaqui.fragments;
 
-
-import android.graphics.Typeface;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseExpandableListAdapter;
+import android.widget.EditText;
 import android.widget.ExpandableListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.descarteaqui.descarteaqui.R;
-import com.descarteaqui.descarteaqui.adapter.PetitionAdapter;
 import com.descarteaqui.descarteaqui.adapter.TipAdapter;
 import com.descarteaqui.descarteaqui.controllers.TipsController;
 
@@ -32,13 +30,16 @@ public class TipFragment extends Fragment {
     private TextView tabEmpresas;
     private TextView tabDicas;
     private TextView tabCEP;
+    private EditText searchField;
+    private RelativeLayout cepTable;
+    private TextView addresField;
 
     private void setItems() {
 
         if (activeTab.equals(tabDicas)){
             listGroup = TipsController.getGroupsTip();
             listData = TipsController.getChildrenTips();
-        } else if (activeTab.equals(tabEmpresas)){
+        } else if (activeTab.equals(tabEmpresas)) {
             listGroup = TipsController.getGroupsEmp();
             listData = TipsController.getChildrenEmp();
         }
@@ -53,8 +54,57 @@ public class TipFragment extends Fragment {
         tabCEP = (TextView) rootView.findViewById(R.id.tab_cep);
         tabEmpresas = (TextView) rootView.findViewById(R.id.tab_empresas);
         expandableListView = (ExpandableListView) rootView.findViewById(R.id.expandable_list_view);
+        cepTable = (RelativeLayout) rootView.findViewById(R.id.cep_layout);
+        searchField = (EditText) rootView.findViewById(R.id.search_field);
+        addresField = (TextView) rootView.findViewById(R.id.addres_field);
+        addresField.setSelected(true);
 
-        activeTab = tabDicas;
+        TextWatcher textWatcher = new TextWatcher() {
+
+            boolean yeah = false;
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                yeah = searchField.getText().toString().contains("-");
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (s.length() == 5 && !yeah){
+                    if (!searchField.getText().toString().contains("-")) {
+                        searchField.setText(searchField.getText() + "-");
+                        searchField.setSelection(searchField.getText().length());
+                    }
+                }
+
+                if (s.length() == 9) {
+
+                    final List<String> ceps = TipsController.searchCEP(getActivity(), searchField.getText().toString());
+                    final String address = TipsController.getAddress(getActivity(), searchField.getText().toString()).toUpperCase();
+                    addresField.animate().scaleX(0).scaleY(0).setDuration(100);
+
+                    rootView.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (address.equals("")){
+                                addresField.setText("NENHUM ENDEREÇO ENCONTRADO :(");
+                            } else {
+                                addresField.setText(address);
+                            }
+                            addresField.animate().scaleX(1).scaleY(1).setDuration(100);;
+                        }
+                    }, 300);
+
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                yeah = searchField.getText().toString().contains("-");
+            }
+        };
+
+        searchField.addTextChangedListener(textWatcher);
 
         View.OnClickListener listener = new View.OnClickListener() {
             public void onClick(View v) {
@@ -70,10 +120,11 @@ public class TipFragment extends Fragment {
         tabCEP.setOnClickListener(listener);
         tabDicas.setOnClickListener(listener);
 
+        activeTab = tabDicas;
+
         setItems();
 
-        final ExpandableListView expandableListView = (ExpandableListView) rootView.findViewById(R.id.expandable_list_view);
-        expandableListView.setAdapter(new TipAdapter(getActivity(), listGroup, listData, "EcoDicas"));
+        changeTab();
 
         expandableListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
             @Override
@@ -87,6 +138,8 @@ public class TipFragment extends Fragment {
         });
 
         expandableListView.setGroupIndicator(null);
+
+        TipsController.createCEPs(getActivity());
 
         return rootView;
     }
@@ -149,13 +202,29 @@ public class TipFragment extends Fragment {
             @Override
             public void run() {
                 String type = "";
+                int CEP_VISIBILITY = View.INVISIBLE;
+                int EXP_VISIBILITY = View.VISIBLE;
                 if (activeTab.equals(tabEmpresas)){
                     type = "Empresas";
-                } else if (activeTab.equals(tabDicas)){
+                    TipAdapter adapter = new TipAdapter(getActivity(), listGroup, listData, type);
+                    expandableListView.setAdapter(adapter);
+                    CEP_VISIBILITY = View.INVISIBLE;
+                    EXP_VISIBILITY = View.VISIBLE;
+                } else if (activeTab.equals(tabDicas)) {
                     type = "EcoDicas";
+                    TipAdapter adapter = new TipAdapter(getActivity(), listGroup, listData, type);
+                    expandableListView.setAdapter(adapter);
+                    CEP_VISIBILITY = View.INVISIBLE;
+                    EXP_VISIBILITY = View.VISIBLE;
+                } else if (activeTab.equals(tabCEP)){
+                    CEP_VISIBILITY = View.VISIBLE;
+                    EXP_VISIBILITY = View.INVISIBLE;
+
                 }
-                TipAdapter adapter = new TipAdapter(getActivity(), listGroup, listData, type);
-                expandableListView.setAdapter(adapter);
+
+                expandableListView.setVisibility(EXP_VISIBILITY);
+                cepTable.setVisibility(CEP_VISIBILITY);
+
             }
         }, 200);
 

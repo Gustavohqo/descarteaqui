@@ -50,13 +50,14 @@ public class Database extends SQLiteOpenHelper {
     public static final String CREATE_TABLE_TIPS = "create table "+ TABLE_TIPS +"("
             + "_id" + " integer primary key autoincrement, "
             + "cep" + " text, "
-            + "monday" + " integer, "
-            + "tuesday" + " integer, "
-            + "wednesday" + " integer, "
-            + "thursday" + " integer, "
-            + "friday" + " integer, "
-            + "saturday" + " integer, "
-            + "sunday" + " integer"
+            + "address" + " text, "
+            + "monday" + " text, "
+            + "tuesday" + " text, "
+            + "wednesday" + " text, "
+            + "thursday" + " text, "
+            + "friday" + " text, "
+            + "saturday" + " text, "
+            + "sunday" + " text"
             +");";
 
 

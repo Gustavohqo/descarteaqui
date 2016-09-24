@@ -71,17 +71,240 @@
             android:layout_height="match_parent"
             android:layout_below="@id/linear_layout">
 
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@drawable/custom_form"
+                android:inputType="number"
+                android:drawableRight="@drawable/ic_search"
+                android:drawableTint="#f9aa50"
+                android:drawablePadding="20dp"
+                android:paddingLeft="12dp"
+                android:paddingRight="16dp"
+                android:paddingTop="17dp"
+                android:paddingBottom="17dp"
+                android:hint="Digite o CEP"
+                android:textAlignment="center"
+                android:id="@+id/search_field"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="30dp"
+                android:maxEms="15"
+                android:maxLength="9"
+                android:textSize="15sp"/>
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="HORÁRIOS"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="15dp"
+                android:singleLine="true"
+                android:ellipsize="marquee"
+                android:marqueeRepeatLimit ="marquee_forever"
+                android:focusable="true"
+                android:text="EOQQQASDASDASDAS"
+                android:focusableInTouchMode="true"
+                android:scrollHorizontally="true"
                 android:textAlignment="center"
-                android:id="@+id/monday"
+                android:id="@+id/addres_field"
                 android:gravity="center"
                 android:textSize="14sp"
                 android:textStyle="bold"
-                android:textColor="@android:color/white"
-                android:background="@color/colorNav"/>
+                android:textColor="@android:color/black"
+                android:layout_below="@id/search_field"/>
+
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/addres_field"
+                android:layout_centerHorizontal="true"
+                android:layout_marginLeft="60dp"
+                android:layout_marginTop="15dp">
+
+                <TableLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:stretchColumns="0, 1"
+                    android:background="@drawable/tips_border"
+                    android:id="@+id/table_layout">
+
+                    <TableRow
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="-3dp"
+                        android:layout_marginBottom="2dp"
+                        android:background="@drawable/tips_border">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:text="Dia da Semana"
+                            android:textAlignment="center"
+                            android:textStyle="bold"
+                            android:textSize="19sp"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:text="Passa"
+                            android:textAlignment="center"
+                            android:textStyle="bold"
+                            android:textSize="19sp"/>
+
+
+                    </TableRow>
+
+                    <TableRow
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="2dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:text="Segunda-feira"
+                            android:id="@+id/segunda_textview"
+                            android:layout_gravity="center"/>
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/segunda_icon"
+                            android:src="@drawable/ic_check_circle_black_24dp" />
+
+                    </TableRow>
+
+                    <TableRow
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="2dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:text="Terça-feira"
+                            android:id="@+id/terca_textview"
+                            android:layout_gravity="center"/>
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/terca_icon"
+                            android:src="@drawable/ic_remove_circle_black_24dp" />
+
+                    </TableRow>
+
+                    <TableRow
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="2dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:text="Quarta-feira"
+                            android:id="@+id/quarta_textview"
+                            android:layout_gravity="center"/>
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/quarta_icon"
+                            android:src="@drawable/ic_check_circle_black_24dp" />
+                    </TableRow>
+
+                    <TableRow
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="2dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:text="Quinta-feira"
+                            android:id="@+id/quinta_textview"
+                            android:layout_gravity="center"/>
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/quinta_icon"
+                            android:src="@drawable/ic_remove_circle_black_24dp" />
+
+                    </TableRow>
+
+                    <TableRow
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="2dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:text="Sexta-feira"
+                            android:id="@+id/sexta_textview"
+                            android:layout_gravity="center"/>
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/sexta_icon"
+                            android:src="@drawable/ic_check_circle_black_24dp" />
+
+                    </TableRow>
+
+                    <TableRow
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="2dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:text="Sábado"
+                            android:id="@+id/sabado_textview"
+                            android:layout_gravity="center"/>
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/sabado_icon"
+                            android:src="@drawable/ic_remove_circle_black_24dp" />
+
+                    </TableRow>
+
+                    <TableRow
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="2dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:text="Domingo"
+                            android:id="@+id/domingo_textview"
+                            android:layout_gravity="center"/>
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/domingo_icon"
+                            android:src="@drawable/ic_check_circle_black_24dp" />
+
+                    </TableRow>
+
+                </TableLayout>
+            </ScrollView>
 
         </RelativeLayout>
 

@@ -4,9 +4,6 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-
-import com.descarteaqui.descarteaqui.model.Petition;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,8 +15,9 @@ public class TipsDB {
     private SQLiteDatabase db;
     private Database TipsDB;
 
-    private final int FIRST_DAY_INDEX = 2;
-    private final int LAST_DAY_INDEX = 3;
+    private final int FIRST_DAY_INDEX = 3;
+    private final int LAST_DAY_INDEX = 9;
+
 
     public TipsDB(Context context){
         TipsDB = new Database(context);
@@ -27,34 +25,90 @@ public class TipsDB {
 
     }
 
-    public void addCEP(String cep, int[] trashDays) {
+    public void addCEP(String cep, String address ,String[] trashDays) {
+        String[] daysOfWeek = {"monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"};
+
         ContentValues valores = new ContentValues();
 
         valores.put("cep", cep);
+        valores.put("address", address);
 
-        String[] daysOfWeek = {"monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"};
 
-        for (int i = 0; i < daysOfWeek.length; i++) {
-            valores.put(daysOfWeek[i], trashDays[i]);
+        int i = 0;
+        for (String dayOfWeek:  daysOfWeek) {
+            valores.put(dayOfWeek, trashDays[i]);
+            i++;
         }
 
         db.insert(Database.TABLE_TIPS, null, valores);
-
     }
 
-    public List<Boolean> searchCEP(String CEP){
-        List<Boolean> list = new ArrayList<>();
+    public String getAddress(String CEP){
+        String address = "";
 
-        String[] colunas = {"_id", "cep", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"};
+        String[] colunas = {"_id", "cep", "address", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"};
 
-        Cursor cursor = db.rawQuery("SELECT monday, tuesday, wednesday, thursday, friday, saturday, sunday FROM " + Database.TABLE_TIPS + " WHERE cep = ?", new String[] {CEP});
+        Cursor cursor = db.query(Database.TABLE_TIPS, colunas, null, null, null, null, "cep ASC");
 
-        if (cursor != null) {
-            for (int i = FIRST_DAY_INDEX; i < LAST_DAY_INDEX; i++) {
-                list.add(Boolean.getBoolean(String.valueOf(cursor.getInt(i))));
-            }
+        if (cursor.getCount() > 0){
+            cursor.moveToFirst();
+
+            do {
+
+                if (CEP.equals(cursor.getString(1))) {
+                    address = cursor.getString(2);
+                }
+
+            } while(cursor.moveToNext());
+        }
+
+        return address;
+    }
+
+    public List<String> searchCEP(String CEP){
+        List<String> list = new ArrayList<>();
+
+        String[] colunas = {"_id", "cep", "address", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"};
+
+        Cursor cursor = db.query(Database.TABLE_TIPS, colunas, null, null, null, null, "cep ASC");
+
+        if (cursor.getCount() > 0){
+            cursor.moveToFirst();
+
+            do {
+
+                if (CEP.equals(cursor.getString(1))) {
+                    for (int i = FIRST_DAY_INDEX; i < LAST_DAY_INDEX; i++) {
+                        list.add(cursor.getString(i));
+                    }
+                }
+
+            } while(cursor.moveToNext());
         }
 
         return list;
+    }
+
+    public List<String> getAllCPF(){
+        List<String> list = new ArrayList<>();
+
+        String[] colunas = {"_id", "cep", "address", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"};
+
+        Cursor cursor = db.query(Database.TABLE_TIPS, colunas, null, null, null, null, "cep ASC");
+
+        if (cursor.getCount() > 0){
+            cursor.moveToFirst();
+
+            do {
+
+                list.add(cursor.getString(1));
+
+            } while(cursor.moveToNext());
+        }
+
+        if (list.isEmpty())
+            return null;
+        else
+            return list;
     }
 }
