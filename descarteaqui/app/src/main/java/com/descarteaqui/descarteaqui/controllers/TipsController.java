@@ -70,10 +70,25 @@ public abstract class TipsController {
 
     }
 
-    public static int getIcon(int empresaIndex){
-        int[] icons = {R.drawable.default_emp, R.drawable.default_emp, R.drawable.default_emp, R.drawable.default_emp, R.drawable.default_emp, R.drawable.default_emp};
+    public static int getIconEmp(int empresaIndex){
+        int[] icons = {R.drawable.ic_shopping_cart_black_24dp, R.drawable.ic_recycle_white_24dp, R.drawable.ic_all_inclusive_black_24dp, R.drawable.ic_local_pharmacy_black_24dp,
+                R.drawable.ic_local_library_black_24dp, R.drawable.ic_school_black_24dp};
 
         return icons[empresaIndex];
+    }
+
+    public static int getIconTips(int empresaIndex){
+        int[] icons = {R.drawable.ic_recycle_white_24dp, R.drawable.ic_food_apple, R.drawable.ic_battery_charging_white_24dp, R.drawable.ic_water_white_24dp,
+                R.drawable.ic_flask_outline_white_24dp, R.drawable.ic_hospital_white_24p};
+
+        return icons[empresaIndex];
+    }
+
+    public static int getIconChild(int childIndex){
+        int[] icons = {R.drawable.ic_location_on_black_18dp, R.drawable.ic_phone_black_18dp, R.drawable.ic_language_black_18dp, R.drawable.ic_watch_later_black_18dp,
+                R.drawable.ic_info_black_18dp};
+
+        return icons[childIndex];
     }
 
     public static HashMap<String, List<String>> getChildrenEmp(){
@@ -91,13 +106,23 @@ public abstract class TipsController {
 
         auxList = new ArrayList<>();
 
+        auxList.add("R. Carlos Alberto Souza, 608 - Bodocongó, Campina Grande - PB, 58109-155");
+        auxList.add("(83) 3333-1395");
+        auxList.add("Não possui");
+        auxList.add("Ter-Qui: 7:30-18h");
+        auxList.add("Coleta de Entulho da Construção Civil.");
+
+        children.put(getGroupsEmp().get(1), auxList);
+
+        auxList = new ArrayList<>();
+
         auxList.add("R. Santa Rita, 486, Campina Grande - PB, 58416-240");
         auxList.add("(83) 98700-1416");
         auxList.add("http://cotramare.org/");
         auxList.add("Seg-Sex: 8:30-16h");
         auxList.add("Trabalham coletando, separando, prensando, enfardando e comercializando os resíduos recicláveis.");
 
-        children.put(getGroupsEmp().get(1), auxList);
+        children.put(getGroupsEmp().get(2), auxList);
 
         auxList = new ArrayList<>();
 
@@ -107,7 +132,7 @@ public abstract class TipsController {
         auxList.add("Agendar via telefone.");
         auxList.add("Atuam na moagem de Garrafas Pet , retirada de Resíduos Industriais e Projeto para os Resíduos Industriais.");
 
-        children.put(getGroupsEmp().get(2), auxList);
+        children.put(getGroupsEmp().get(3), auxList);
 
         auxList = new ArrayList<>();
 
@@ -118,7 +143,7 @@ public abstract class TipsController {
         auxList.add("A empresa Mundial tech desenvolveu a Usina Beneficiadora de Resíduos Sólidos Urbanos (UBRS)," +
                 " que transforma os resíduos sólidos deixados pelo homem em um material útil e ecologicamente correto.");
 
-        children.put(getGroupsEmp().get(3), auxList);
+        children.put(getGroupsEmp().get(4), auxList);
 
         auxList = new ArrayList<>();
 
@@ -131,14 +156,14 @@ public abstract class TipsController {
                 "peças todas separadas e logo depois são enviadas à  uma empresa de reciclagem. Os equipamentos " +
                 "recuperados são doados ou emprestados a pessoas carentes, garantindo assim o seu acesso à tecnologia. ");
 
-        children.put(getGroupsEmp().get(4), auxList);
+        children.put(getGroupsEmp().get(5), auxList);
 
         return children;
     }
 
     public static HashMap<String, List<String>> getChildrenTips(){
 
-        String metais =  "Metais : os tipos mais conhecidos são o ferro, aço, cobre, estanho, chumbo, ouro e a prata. No quesito reciclagem, podemos citar o aço, muito comum " +
+        String metais =  "Metais: Os tipos mais conhecidos são o ferro, aço, cobre, estanho, chumbo, ouro e a prata. No quesito reciclagem, podemos citar o aço, muito comum " +
                 "na forma de latinhas que podem ser reutilizadas para fabricação de novas latas, ou até mesmo novos utensílios, tais como arames, dobradiças, " +
                 "entre outros. Uma característica interessante dessas latinhas de aço é que elas podem ser recicladas infinitamente, sem perder quaisquer " +
                 "propriedade que lhe é fundamental. Outro metal que merece destaque é o alumínio, tendo em vista que o Brasil é o maior reciclador das latas " +
@@ -148,14 +173,14 @@ public abstract class TipsController {
         String coletaSeletiva = "Consiste na separação e recolhimento dos resíduos descartados de modo que atua diretamente na redução do lixo jogado na natureza. \n" +
                 "O materiais que compõem a coleta seletiva são: papéis, metais, plásticos e vidros." ;
 
-        String papel = "Papel : imprima sempre frente e verso,  pois isso reduz em 50% o consumo de folhas.";
+        String papel = "Papel: Imprima sempre frente e verso, pois isso reduz em 50% o consumo de folhas.";
 
-        String plastico = "Plástico : tem como um dos principais representantes o PET que, quando reciclado, pode resultar em fibras de poliéster para produção de tecidos, " +
+        String plastico = "Plástico: Tem como um dos principais representantes o PET que, quando reciclado, pode resultar em fibras de poliéster para produção de tecidos, " +
                 "ou até embalagens para outros produtos que não sejam da indústria alimentícia. Além do mais, outro tipo de plástico muito utilizado são " +
                 "as sacolas plásticas, que não são biodegradáveis, isto é, são difíceis de se decompor pela ação de agentes naturais, por isso é adequado " +
                 "levar as próprias sacolas não plásticas ao fazer compras." ;
 
-        String vidro =  "Vidro : é um material 100% reciclável, porque ele pode ser usado infinita vezes para fabricar outros vidros, além de ser preferível usar embalagens " +
+        String vidro =  "Vidro: É um material 100% reciclável, porque ele pode ser usado infinita vezes para fabricar outros vidros, além de ser preferível usar embalagens " +
                 "de vidro retornáveis, pois isso reduz a necessidade de extração da matéria-prima e da fabricação. Além disso, no caso do descarte do vidro " +
                 "quebrado, é interessante cortar uma garrafa e colocar os cacos dentro dela e lacrá-la, ou colocar em uma caixa de papelão e também lacrar.";
 
@@ -185,11 +210,11 @@ public abstract class TipsController {
                 " depositados em empresas especializadas, pois elas farão o processo de manufatura reversa(extração dos " +
                 "materiais usados na fabricação do dispositivo), de modo a reaproveitar os materiais.";
 
-        String pilhas = "Pilhas: não devem ser jogadas no lixo comum com outros materiais, pois possuem metais pesados que são" +
+        String pilhas = "Pilhas: Não devem ser jogadas no lixo comum com outros materiais, pois possuem metais pesados que são" +
                 " nocivos às pessoas e ao meio-ambiente." +
                 " Nesse caso, é adequado enviá-las a uma empresa especializada.";
 
-        String baterias = "Baterias: são feitas extrações dos componentes que a compõe de modo que possam ser utilizados " +
+        String baterias = "Baterias: São feitas extrações dos componentes que a compõe de modo que possam ser utilizados " +
                 "novamente no processo produtivo.";
 
         String descontoEnergisa = "No contexto de Campina Grande, a Energisa fornece descontos na conta de energia para quem " +

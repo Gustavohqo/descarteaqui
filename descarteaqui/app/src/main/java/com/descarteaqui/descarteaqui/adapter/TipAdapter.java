@@ -1,6 +1,9 @@
 package com.descarteaqui.descarteaqui.adapter;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -73,11 +76,7 @@ public class TipAdapter extends BaseExpandableListAdapter {
         ViewHolderGroup holder;
 
         if (convertView == null){
-            if (type.equals("EcoDicas")) {
-                convertView = inflater.inflate(R.layout.header_expandable_list_view, null);
-            } else if (type.equals("Empresas")){
-                convertView = inflater.inflate(R.layout.header_expandable_list_view_emp, null);
-            }
+            convertView = inflater.inflate(R.layout.header_expandable_list_view, null);
 
             holder = new ViewHolderGroup();
             convertView.setTag(holder);
@@ -88,16 +87,21 @@ public class TipAdapter extends BaseExpandableListAdapter {
             holder = (ViewHolderGroup) convertView.getTag();
         }
 
-        if (type.equals("Empresas")){
-            holder.empIcon = (ImageView) convertView.findViewById(R.id.empIcon);
+        holder.empIcon = (ImageView) convertView.findViewById(R.id.empIcon);
 
-            holder.empIcon.setImageResource(TipsController.getIcon(groupPosition));
+        if (type.equals("Empresas")){
+            holder.empIcon.setImageResource(TipsController.getIconEmp(groupPosition));
+        } else if (type.equals("EcoDicas")){
+            holder.empIcon.setImageResource(TipsController.getIconTips(groupPosition));
         }
 
+        holder.empIcon.setColorFilter(Color.parseColor("#448d25"));
 
         if (isExpanded) {
+            holder.tvGroup.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
             holder.imgGroup.animate().rotation(-180);
         } else {
+            holder.tvGroup.setTypeface(Typeface.DEFAULT);
             holder.imgGroup.animate().rotation(0);
         }
 
@@ -124,6 +128,12 @@ public class TipAdapter extends BaseExpandableListAdapter {
             holder.tvItemText = (TextView) convertView.findViewById(R.id.tvItemText);
         } else {
             holder = (ViewHolderItem) convertView.getTag();
+        }
+
+        if (type.equals("Empresas")) {
+            holder.tvItemIcon = (ImageView) convertView.findViewById(R.id.tvItemIcon);
+            holder.tvItemIcon.setImageResource(TipsController.getIconChild(childPosition));
+            holder.tvItemIcon.setColorFilter(Color.GRAY);
         }
 
         holder.tvItemText.setText(val);
