@@ -78,7 +78,7 @@ public abstract class TipsController {
     }
 
     public static int getIconTips(int empresaIndex){
-        int[] icons = {R.drawable.ic_recycle_white_24dp, R.drawable.ic_food_apple, R.drawable.ic_battery_charging_white_24dp, R.drawable.ic_water_white_24dp,
+        int[] icons = {R.drawable.ic_recycle_white_24dp, R.drawable.ic_restaurant_black_24dp, R.drawable.ic_battery_charging_white_24dp, R.drawable.ic_water_white_24dp,
                 R.drawable.ic_flask_outline_white_24dp, R.drawable.ic_hospital_white_24p};
 
         return icons[empresaIndex];
