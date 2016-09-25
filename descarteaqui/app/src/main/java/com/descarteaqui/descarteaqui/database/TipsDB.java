@@ -106,9 +106,6 @@ public class TipsDB {
             } while(cursor.moveToNext());
         }
 
-        if (list.isEmpty())
-            return null;
-        else
-            return list;
+        return list;
     }
 }
