@@ -60,8 +60,7 @@
             android:id="@+id/expandable_list_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@id/linear_layout"
-            android:visibility="invisible">
+            android:layout_below="@id/linear_layout">
 
         </ExpandableListView>
 
@@ -69,17 +68,18 @@
             android:id="@+id/cep_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@id/linear_layout">
+            android:layout_below="@id/linear_layout"
+            android:visibility="invisible">
 
             <EditText
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="wrap_content"
                 android:background="@drawable/custom_form"
                 android:inputType="number"
                 android:drawableRight="@drawable/ic_search"
                 android:drawableTint="#f9aa50"
                 android:drawablePadding="20dp"
-                android:paddingLeft="12dp"
+                android:paddingLeft="25dp"
                 android:paddingRight="16dp"
                 android:paddingTop="17dp"
                 android:paddingBottom="17dp"
@@ -90,8 +90,7 @@
                 android:layout_marginTop="20dp"
                 android:layout_marginLeft="30dp"
                 android:maxEms="15"
-                android:maxLength="9"
-                android:textSize="15sp"/>
+                android:maxLength="9"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -102,7 +101,6 @@
                 android:ellipsize="marquee"
                 android:marqueeRepeatLimit ="marquee_forever"
                 android:focusable="true"
-                android:text="EOQQQASDASDASDAS"
                 android:focusableInTouchMode="true"
                 android:scrollHorizontally="true"
                 android:textAlignment="center"
@@ -174,7 +172,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:id="@+id/segunda_icon"
-                            android:src="@drawable/ic_check_circle_black_24dp" />
+                            android:src="@drawable/ic_check_circle_black_24dp"
+                            android:visibility="invisible"/>
 
                     </TableRow>
 
@@ -195,7 +194,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:id="@+id/terca_icon"
-                            android:src="@drawable/ic_remove_circle_black_24dp" />
+                            android:src="@drawable/ic_remove_circle_black_24dp"
+                            android:visibility="invisible"/>
 
                     </TableRow>
 
@@ -216,7 +216,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:id="@+id/quarta_icon"
-                            android:src="@drawable/ic_check_circle_black_24dp" />
+                            android:src="@drawable/ic_check_circle_black_24dp"
+                            android:visibility="invisible"/>
                     </TableRow>
 
                     <TableRow
@@ -236,7 +237,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:id="@+id/quinta_icon"
-                            android:src="@drawable/ic_remove_circle_black_24dp" />
+                            android:src="@drawable/ic_remove_circle_black_24dp"
+                            android:visibility="invisible"/>
 
                     </TableRow>
 
@@ -257,7 +259,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:id="@+id/sexta_icon"
-                            android:src="@drawable/ic_check_circle_black_24dp" />
+                            android:src="@drawable/ic_check_circle_black_24dp"
+                            android:visibility="invisible"/>
 
                     </TableRow>
 
@@ -278,7 +281,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:id="@+id/sabado_icon"
-                            android:src="@drawable/ic_remove_circle_black_24dp" />
+                            android:src="@drawable/ic_remove_circle_black_24dp"
+                            android:visibility="invisible"/>
 
                     </TableRow>
 
@@ -299,11 +303,13 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:id="@+id/domingo_icon"
-                            android:src="@drawable/ic_check_circle_black_24dp" />
+                            android:src="@drawable/ic_check_circle_black_24dp"
+                            android:visibility="invisible"/>
 
                     </TableRow>
 
                 </TableLayout>
+
             </ScrollView>
 
         </RelativeLayout>

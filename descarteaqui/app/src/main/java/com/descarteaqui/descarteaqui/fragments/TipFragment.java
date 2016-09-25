@@ -1,5 +1,6 @@
 package com.descarteaqui.descarteaqui.fragments;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.text.Editable;
@@ -9,13 +10,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TableLayout;
 import android.widget.TextView;
 
 import com.descarteaqui.descarteaqui.R;
 import com.descarteaqui.descarteaqui.adapter.TipAdapter;
 import com.descarteaqui.descarteaqui.controllers.TipsController;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -33,6 +37,18 @@ public class TipFragment extends Fragment {
     private EditText searchField;
     private RelativeLayout cepTable;
     private TextView addresField;
+    private TableLayout daysTable;
+
+    private ImageView img_segunda;
+    private ImageView img_terca;
+    private ImageView img_quarta;
+    private ImageView img_quinta;
+    private ImageView img_sexta;
+    private ImageView img_sabado;
+    private ImageView img_domingo;
+
+    private final int OK_ICON = R.drawable.ic_check_circle_black_24dp;
+    private final int NG_ICON = R.drawable.ic_remove_circle_black_24dp;
 
     private void setItems() {
 
@@ -59,6 +75,14 @@ public class TipFragment extends Fragment {
         addresField = (TextView) rootView.findViewById(R.id.addres_field);
         addresField.setSelected(true);
 
+        img_segunda = (ImageView) rootView.findViewById(R.id.segunda_icon);
+        img_terca = (ImageView) rootView.findViewById(R.id.terca_icon);
+        img_quarta = (ImageView) rootView.findViewById(R.id.quarta_icon);
+        img_quinta = (ImageView) rootView.findViewById(R.id.quinta_icon);
+        img_sexta = (ImageView) rootView.findViewById(R.id.sexta_icon);
+        img_sabado = (ImageView) rootView.findViewById(R.id.sabado_icon);
+        img_domingo = (ImageView) rootView.findViewById(R.id.domingo_icon);
+
         TextWatcher textWatcher = new TextWatcher() {
 
             boolean yeah = false;
@@ -70,6 +94,7 @@ public class TipFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
+
                 if (s.length() == 5 && !yeah){
                     if (!searchField.getText().toString().contains("-")) {
                         searchField.setText(searchField.getText() + "-");
@@ -79,7 +104,7 @@ public class TipFragment extends Fragment {
 
                 if (s.length() == 9) {
 
-                    final List<String> ceps = TipsController.searchCEP(getActivity(), searchField.getText().toString());
+                    final List<String> daysOfWeek = TipsController.searchCEP(getActivity(), searchField.getText().toString());
                     final String address = TipsController.getAddress(getActivity(), searchField.getText().toString()).toUpperCase();
                     addresField.animate().scaleX(0).scaleY(0).setDuration(100);
 
@@ -94,6 +119,8 @@ public class TipFragment extends Fragment {
                             addresField.animate().scaleX(1).scaleY(1).setDuration(100);;
                         }
                     }, 300);
+
+                    fillTable(daysOfWeek);
 
                 }
             }
@@ -178,7 +205,7 @@ public class TipFragment extends Fragment {
             alphaDicas = 70;
             alphaCEP = 200;
 
-            value = 10000;
+            value = -10000;
         }
 
         tabDicas.animate().scaleX(scaleDicas).scaleY(scaleDicas);
@@ -228,6 +255,52 @@ public class TipFragment extends Fragment {
             }
         }, 200);
 
+
+    }
+
+    private void fillTable(List<String> daysOfWeek){
+        List<ImageView> daysIcon = new ArrayList<>();
+
+        daysIcon.add(img_segunda);
+        daysIcon.add(img_terca);
+        daysIcon.add(img_quarta);
+        daysIcon.add(img_quinta);
+        daysIcon.add(img_sexta);
+        daysIcon.add(img_sabado);
+        daysIcon.add(img_domingo);
+
+        if (!daysOfWeek.isEmpty()) {
+
+            for (int i = 0; i < daysIcon.size(); i++) {
+                final ImageView currentView;
+
+                currentView = daysIcon.get(i);
+                currentView.setVisibility(View.VISIBLE);
+
+                if (daysOfWeek.get(i).equals("OK")){
+                    daysIcon.get(i).setColorFilter(Color.parseColor("#448d25"));
+                    daysIcon.get(i).setImageResource(OK_ICON);
+                } else if (daysOfWeek.get(i).equals("NG")){
+                    daysIcon.get(i).setColorFilter(Color.RED);
+                    daysIcon.get(i).setImageResource(NG_ICON);
+                }
+
+                currentView.animate().scaleX(0).scaleY(0).setDuration(0);
+                rootView.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        currentView.animate().scaleX(1).scaleY(1).setDuration(150);
+                    }
+                }, 500);
+
+            }
+        } else {
+
+            for (int i = 0; i < daysIcon.size(); i++) {
+                daysIcon.get(i).setVisibility(View.INVISIBLE);
+            }
+
+        }
 
     }
 

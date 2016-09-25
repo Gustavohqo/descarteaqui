@@ -19,15 +19,32 @@ public abstract class TipsController {
     public static void createCEPs(Context ctx){
         TipsDB = new TipsDB(ctx);
 
-        if (getAllCPS(ctx) == null){
-            TipsDB.addCEP("58433-521", "Rua Aprígio Veloso, Bodocongó", new String[]{"Sim", "Não", "Não", "Não", "Não", "Não", "Não"});
-            TipsDB.addCEP("58433-522", "Rua Maria Helena, Bodocongó 3", new String[]{"Sim", "Sim", "Não", "Não", "Não", "Não", "Não"});
-            TipsDB.addCEP("58433-523", "Rua Republica Francesa, Bairro das Nações", new String[]{"Sim", "Sim", "Sim", "Não", "Não", "Não", "Não"});
-            TipsDB.addCEP("58433-524", "Rua Gonçalves Dias, Monte Castelo", new String[]{"Sim", "Sim", "Sim", "Sim", "Não", "Não", "Não"});
-            TipsDB.addCEP("58433-525", "Rua Leonino Carneiro, Centro", new String[]{"Sim", "Sim", "Sim", "Sim", "Sim", "Não", "Não"});
-            TipsDB.addCEP("58433-526", "Rua Clementino Siqueira, Jardim Tavares", new String[]{"Sim", "Sim", "Sim", "Sim", "Sim", "Sim", "Não"});
-            TipsDB.addCEP("58433-527", "Rua Dr. Vasconcelos, Alto Branco", new String[]{"Sim", "Sim", "Sim", "Sim", "Sim", "Sim", "Sim"});
-        }
+        List<String> allCPFs = getAllCPS(ctx);
+
+        //gambiarra por enquanto
+
+        if (!allCPFs.contains("58433-521"))
+            TipsDB.addCEP("58433-521", "Rua Aprígio Veloso, Bodocongó", new String[]{"OK", "NG", "NG", "NG", "NG", "NG", "NG"});
+
+        if (!allCPFs.contains("58433-522"))
+            TipsDB.addCEP("58433-522", "Rua Republica Francesa, Bairro das Nações", new String[]{"OK", "OK", "OK", "NG", "NG", "NG", "NG"});
+
+        if (!allCPFs.contains("58433-523"))
+            TipsDB.addCEP("58433-523", "Rua Gonçalves Dias, Monte Castelo", new String[]{"OK", "OK", "OK", "OK", "NG", "NG", "NG"});
+
+        if (!allCPFs.contains("58433-524"))
+            TipsDB.addCEP("58433-524", "Rua Leonino Carneiro, Centro", new String[]{"OK", "OK", "OK", "OK", "OK", "NG", "NG"});
+
+        if (!allCPFs.contains("58433-525"))
+            TipsDB.addCEP("58433-525", "Rua Clementino Siqueira, Jardim Tavares", new String[]{"OK", "OK", "OK", "OK", "OK", "OK", "NG"});
+
+        if (!allCPFs.contains("58433-526"))
+            TipsDB.addCEP("58433-526", "Rua Dr. Vasconcelos, Alto Branco", new String[]{"OK", "OK", "OK", "OK", "OK", "OK", "OK"});
+
+        if (!allCPFs.contains("58433-528"))
+            TipsDB.addCEP("58433-528", "Rua Maria Helena de Menezes, Bodocongó 3", new String[]{"OK", "NG", "OK", "OK", "NG", "NG", "OK"});
+
+
     }
 
     public static List<String> getAllCPS(Context ctx){

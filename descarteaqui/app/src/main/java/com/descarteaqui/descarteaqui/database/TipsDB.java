@@ -78,7 +78,7 @@ public class TipsDB {
             do {
 
                 if (CEP.equals(cursor.getString(1))) {
-                    for (int i = FIRST_DAY_INDEX; i < LAST_DAY_INDEX; i++) {
+                    for (int i = FIRST_DAY_INDEX; i < LAST_DAY_INDEX + 1; i++) {
                         list.add(cursor.getString(i));
                     }
                 }
